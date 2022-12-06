@@ -1,5 +1,5 @@
 \documentclass{beamer}
-\usetheme[sectionpage=none]{metropolis}
+\usetheme{metropolis}
 %\usepackage[backend=biber]{biblatex}
 %\usepackage{booktabs} 
 \usepackage{url}
@@ -51,6 +51,7 @@
 \end{frame}
 
 \section{Tensor-Kontraktionen}
+\subsection{Allgemeines}
 
 \begin{frame}{Begriffseinführungen}
 	\begin{columns}
@@ -81,13 +82,47 @@
 \end{frame}
 \note[itemize]{
 \item verschiedene Kontraktionsreihenfolgen
-\item bei jedem schritt wird eine sharing order eliminiert
+\item bei jedem Schritt wird eine sharing order eliminiert
 }
+
+\subsection{BFS-Algorithmus}
+\begin{frame}{BFS - Einführung}
+	\begin{itemize}
+		\item BFS = Breadth First Search
+	\end{itemize}
+\end{frame}
+\note[itemize]{
+	\item someNote
+}
+
+
+\section{Adjazenzmatrix-basierte Kontraktionssuche}
+
+
+\subsection{Outer Product Pruning}
+\begin{frame}{OPP - Einührung}
+	\includegraphics[scale=0.2]{figure-3-a}
+\end{frame}
+\note[itemize]{
+	\item outer product: multiplikation von Tensoren ohne sharing Orders (siehe $\tau_2, \tau_3$)
+	\item es ist bewiesen dass die beste Kontraktion (kleinste MS / MC) immer ohne outer - products auskommt
+	\item[$\Rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
+	\item Wenn es im Netzwerk "Subnetzwerke" gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
+}
+\begin{frame}{OPP - Algorithmus}
+	
+\end{frame}
+\note[itemize]{
+	\item someNote
+}
+
+
 
 
 \begin{frame}[allowframebreaks]{Bibliography}
 	\bibliography{../bibliography/bibliography.bib}
 	\bibliographystyle{splncs04}
+	\nocite{*}
 \end{frame}
 
 \end{document}
