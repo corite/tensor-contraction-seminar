@@ -1,1 +1,1 @@
-# tensor-contractions-seminar [![Build LaTeX documents](https://github.com/corite/tensor-contractions-seminar/actions/workflows/build.yml/badge.svg)](https://github.com/corite/tensor-contractions-seminar/actions/workflows/build.yml)
+# tensor-contraction-seminar [![Build LaTeX documents](https://github.com/corite/tensor-contraction-seminar/actions/workflows/build.yml/badge.svg)](https://github.com/corite/tensor-contraction-seminar/actions/workflows/build.yml)
