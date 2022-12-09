@@ -92,7 +92,10 @@
 	\end{itemize}
 \end{frame}
 \note[itemize]{
-	\item someNote
+	\item man fängt mit 2er kombinationen der Tensoren an, berechnet jeweils MS und MC
+	\item dann geht man zur nächst größeren Menge (3er, 4er, 5er ... Kombinationen) und macht dasselbe, dabei verwendet man die bereits berechneten Ergebnisse wieder
+	\item wenn man alle durch is sucht man das Minimum der in der letzen Iteration berechneten Werte
+	\item Suchraum: $O(2^v)$
 }
 
 
@@ -100,7 +103,7 @@
 
 
 \subsection{Outer Product Pruning}
-\begin{frame}{OPP - Einührung}
+\begin{frame}{Pruning - Einührung}
 	\includegraphics[scale=0.2]{figure-3-a}
 \end{frame}
 \note[itemize]{
@@ -109,7 +112,7 @@
 	\item[$\Rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
 	\item Wenn es im Netzwerk "Subnetzwerke" gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
 }
-\begin{frame}{OPP - Algorithmus}
+\begin{frame}{Pruning - Algorithmus}
 	
 \end{frame}
 \note[itemize]{
