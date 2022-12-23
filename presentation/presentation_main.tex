@@ -39,7 +39,7 @@
 
 \begin{frame}
 	\titlepage
-  \end{frame}
+\end{frame}
 
 \begin{frame}{Gliederung}
 	\tableofcontents
@@ -64,10 +64,10 @@
 	\end{columns}
 \end{frame}
 \note[itemize]{
-\item Graph-Notation: Kanten=Dimensionen (Order), Knoten=Tensoren
-\item Kanten zwischen Knoten "Sharing Orders", sonst "Free Orders"
-\item Kantengewicht: $\log_2$ der Order
-\item bei $V$ Tensoren werden $V-1$ Schritte benötigt
+	\item Graph-Notation: Kanten=Dimensionen (Order), Knoten=Tensoren
+	\item Kanten zwischen Knoten "Sharing Orders", sonst "Free Orders"
+	\item Kantengewicht: $\log_2$ der Order
+	\item bei $V$ Tensoren werden $V-1$ Schritte benötigt
 }
 
 \begin{frame}{Kontraktion}
@@ -81,8 +81,8 @@
 	\end{columns}
 \end{frame}
 \note[itemize]{
-\item verschiedene Kontraktionsreihenfolgen
-\item bei jedem Schritt wird eine sharing order eliminiert
+	\item verschiedene Kontraktionsreihenfolgen
+	\item bei jedem Schritt wird eine sharing order eliminiert
 }
 
 \subsection{BFS-Algorithmus}
@@ -101,6 +101,45 @@
 
 \section{Adjazenzmatrix-basierte Kontraktionssuche}
 
+\subsection{Vanilla - Suche}
+\begin{frame}{Sharing Order Calculation}
+	\includegraphics[scale=0.4]{algorithm-1}
+\end{frame}
+\note[itemize]{
+	\item WICHTIG: ab jetzt arbeiten wir auf den Adjazenzmatrizen und nicht auf den tensoren selbst
+	\item input:
+	\item zwei zeilen-vektoren  der  Matrizen zu kontrahierenden Tensoren
+	\item die Menge der Tensoren, aus welchen die inputs (durch vorherige Kontraktionen) entstanden sind
+}
+\begin{frame}{Vanilla Suche - Teil 1}
+	\includegraphics[scale=0.2]{algorithm-2-a}
+\end{frame}
+\note[itemize]{
+	\item 1-2: initialisiere Adjazenzmatrix und Lowest Maximum Expense für alle tensoren
+	\item 3: iteriere über alle Tensoren im Netzwerk
+	\item 4: speichere die Größe des Tensors (Data Size)
+	\item 5: speichere Zeilenvektor aus Adjazenzmatrix
+	\item 6-7: Je nach modus (compute/storage) wird LME unterschiedlich initialisiert
+}
+\begin{frame}{Vanilla Suche - Teil 2}
+	\includegraphics[scale=0.25]{algorithm-2-b}
+\end{frame}
+\note[itemize]{
+	\item 10: iteriere über möglichen Kontraktions-Größen
+	\item 12: iteriere über alle Tensoren im Set
+	\item 13: wähle beliebig einen split-case des aktuellen Tensors $T_I$
+	\item 15-16: berechne den Zeilenvektor und Data Size von $T_I$
+	\item 17: Falls neues MS gefunden wurde wird dies gespeichert
+	\item Generell: initialisiert nur variablen, die tatsächliche Berechnung geschieht in Teil 3
+}
+\begin{frame}{Vanilla Suche - Teil 3}
+	\includegraphics[scale=0.25]{algorithm-2-c}
+\end{frame}
+\note[itemize]{
+	\item WICHTIG: immernoch innerhalb der vorherigen beiden Schleifen
+	\item 21: Iteriere über jeden split case von $T_I$
+}
+
 
 \subsection{Outer Product Pruning}
 \begin{frame}{Pruning - Einührung}
@@ -113,7 +152,7 @@
 	\item Wenn es im Netzwerk "Subnetzwerke" gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
 }
 \begin{frame}{Pruning - Algorithmus}
-	
+
 \end{frame}
 \note[itemize]{
 	\item someNote
