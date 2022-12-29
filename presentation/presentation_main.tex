@@ -108,28 +108,28 @@
 		\begin{frame}{Beispielkontraktionen und Berechnung von MC/MS}
 			\begin{figure}
 				\includegraphics{figure_03_a}
-				\caption{beliebiges Netzwerk mit angegebenen free/sharing orders}
+				\caption*{beliebiges Netzwerk mit angegebenen free/sharing orders}
 			\end{figure}
 		\end{frame}
 
 		\begin{frame}{Beispielkontraktionen und Berechnung von MC/MS}
 			\begin{figure}
 				\includegraphics{figure_03_b}
-				\caption{beliebige Kontraktion mit Angabe des jeweiligen SE und CE}
+				\caption*{beliebige Kontraktion mit Angabe des jeweiligen SE und CE}
 			\end{figure}
 		\end{frame}
 
 		\begin{frame}{Beispielkontraktionen und Berechnung von MC/MS}
 			\begin{figure}
 				\includegraphics{figure_03_c}
-				\caption{Kontraktion mit bestmöglichem MS}
+				\caption*{Kontraktion mit bestmöglichem MS}
 			\end{figure}
 		\end{frame}
 
 		\begin{frame}{Beispielkontraktionen und Berechnung von MC/MS}
 			\begin{figure}
 				\includegraphics{figure_03_d}
-				\caption{Kontraktion mit bestmöglichem MC}
+				\caption*{Kontraktion mit bestmöglichem MC}
 			\end{figure}
 		\end{frame}
 
@@ -172,6 +172,104 @@
 		\end{frame}
 	
 	
+		\section{Verwendete Datenstrukturen}
+		\subsection{Adjazenzmatrix für Sharing-Orders}
+
+			\begin{frame}{Aufbau der verwendeten Datenstruktur}
+				\begin{itemize}
+					\item das Tensorennetzerk wird als ein ungerichteter Graph angesehen
+					\item es wird eine Adjazenzmatrix verwendet, um die Sharing-Orders zu speichern und auf sie zuzugreifen
+					\item die Matrix ist hierbei nicht symmetrisch, 
+					sondern es gilt $SO_{\bm{\tau}_i \bm{\tau}_j} = E_{\bm{\tau}_i \bm{\tau}_j} + E_{\bm{\tau}_j \bm{\tau}_i}$, wobei $E_{\bm{\tau}_a \bm{\tau}_b}$ der jeweilige Eintrag in der Zeile von $\bm{\tau}_a$ und Spalte von $\bm{\tau}_b$ ist und $E_{\bm{\tau}_a \bm{\tau}_b} \in \mathbb{N}_0$.
+				\end{itemize}
+				\begin{figure}
+					\includegraphics{figure_05_a}
+				\end{figure}
+			\end{frame}
+
+			\begin{frame}{Beispiel einer Adjazenzmatrix}
+				\begin{columns}
+					\column{.5\textwidth}
+					\begin{figure}
+						\includegraphics[scale=1.7]{figure_03_a_mid}
+						\caption*{Tensornetzwerk mit eingetragenen Sharing-Orders}
+					\end{figure}
+					\column{.5\textwidth}
+					\begin{figure}
+						\includegraphics[scale=1.3]{figure_05_c}
+						\caption*{eine mögliche zum Netzerk gehörende Adjazenzmatrix}
+					\end{figure}
+				\end{columns}
+			\end{frame}
+
+			\begin{frame}{Zeilenvektoren von zusammengesetzten Tensoren}
+				\begin{itemize}
+					\item \textit{zur Erinnerung:} $SO_{\bm{T}_I \bm{T}_J} = \sum_m \log_k N^m_{\bm{T}_I \bm{T}_J}$
+					\item somit ist beispielsweise $SO_{\bm{\tau}_1 \bm{T}_{02}} = SO_{\bm{\tau}_1 \bm{\tau}_0} + SO_{\bm{\tau}_1 \bm{\tau}_2}$
+				\end{itemize} \pause
+
+				\begin{figure}
+					\includegraphics{figure_03_b_low}
+				\end{figure}
+			\end{frame}
+
+			\begin{frame}{Zeilenvektoren von zusammengesetzten Tensoren}
+				\begin{figure}
+					\includegraphics[scale=.9]{figure_05_a_c}
+				\end{figure} \pause
+				\begin{figure}
+					\includegraphics[scale=1.1]{figure_05_b_d}
+				\end{figure} \pause
+				\begin{equation*}
+					SO_{\bm{T}_{02} \bm{\tau}_1} = R_{\bm{T}_{02}}[1] + R_{\bm{\tau}_1}[0] + R_{\bm{\tau}_1}[2]
+				\end{equation*}
+			\end{frame}
+
+			\begin{frame}{Zeilenvektoren von zusammengesetzten Tensoren}
+				\begin{itemize}
+					\item die Zeilenvektoren möglicher Tensoren werden gespeichert
+					\item dies ermöglicht eine effiziente Berechnung von Zeilenvektoren größerer Tensoren und somit deren Shared-Orders
+				\end{itemize}
+				\begin{equation*}
+					R_{\bm{T}_I} = R_{\bm{T}_J} + R_{\bm{T}_K}, J \cup K = I \wedge J \cap K = \emptyset
+				\end{equation*} \pause
+				\begin{itemize}
+					\item auch der $SE$ eines Tensors wird mit Hilfe eines beliebigen Split-Cases berechnet und gespeichert
+				\end{itemize}
+				\begin{equation*}
+					SE_{\bm{T}_I \bm{T}_J} = S_{\bm{T}_{I}} + S_{\bm{T}_{J}} - 2SO_{\bm{T}_I \bm{T}_J}
+				\end{equation*}
+			\end{frame}
+
+			\subsection{Adjazenzmatrix zum Finden von Outer-Products}
+			\begin{frame}{Finden von Outer-Products}
+				\begin{itemize}
+					\item das Kontrahieren zweier Tensoren ohne Sharing-Order ist ein Outer-Product
+					\item diese Outer-Products müssen nicht beachtet werden, da es immer eine Kontraktionssequenz ohne Outer-Products gibt, welche den kleinsten $MC$ bzw. $MS$ besitzt\cite{outerProduct}
+					\item es wird eine ähnliche Datensturktur wie zuvor verwendet, um Outer-Products zu finden
+				\end{itemize} \pause
+				\begin{equation*}
+					\rightarrow \text{zu finden sind Tensoren, sodass } SO_{\bm{T}_I \bm{T}_J} = 0
+				\end{equation*}
+			\end{frame}
+
+			\begin{frame}{Finden von Outer-Products}
+				\begin{figure}
+					\includegraphics[scale=1.1]{figure_05_e_g}
+				\end{figure} \pause
+				\begin{figure}
+					\includegraphics[scale=1.2]{figure_05_f_h}
+				\end{figure}
+			\end{frame}
+
+			\begin{frame}{Finden von Outer-Products}
+				\begin{itemize}
+					\item es wird ein Zeilenvektor $O_{\bm{T}_I}$ berechnet
+					\item an den Spalten (und den dazugehörigen Tensoren), welche gleich $0$ sind, sind die Tensoren ablesbar, welche keine Sharing-Orders mit $\bm{T}_I$ haben
+					\item diese können im späteren Algorithmus ignoriert werden \pause
+					\item die Diagonale der verwendeten Matrix ist $1$, damit Tensoren, welche sich schon in der Menge $I$ aus $\bm{T}_I$ befinden, grundsätzlich einen Wert größer $0$ in $O_{\bm{T}_I}$ haben
+				\end{itemize}
+			\end{frame}
 	
 	
 	
