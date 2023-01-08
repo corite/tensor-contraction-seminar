@@ -294,6 +294,47 @@
 				\end{itemize} \pause
 				$\rightarrow$ keine Speicherkonflikte
 			\end{frame}
+
+		
+		\section{Experimentelle Resultate}
+		\subsection{Vanilla Search}
+
+		\begin{frame}{Experimentelle Resultate Vanilla Search}
+			\begin{itemize}
+				\item die für das Testen verwendeten Tensornetzwerke sind komplett vernetzt
+			\end{itemize}
+			\begin{figure}
+				\includegraphics{figure_08}
+			\end{figure} \pause
+			$\rightarrow$ MS Vanilla ist schneller als MC Vanilla
+		\end{frame}
+
+		\begin{frame}{Experimentelle Resultate Vanilla Search}
+			\begin{itemize}
+				\item ein zusätzlicher Tensor führt ungefähr zu einer Verdreifachung der Suchzeit
+			\end{itemize}
+			\begin{figure}
+				\includegraphics{table_02}
+			\end{figure}
+			\begin{equation*}
+				Split_{total} = \sum^V_{v=1} \binom{V}{v} \cdot Split_v = \sum^v_{v=1} \binom{V}{v} \cdot \mathcal{O} \left(2^V \right) = \mathcal{O} \left(3^V \right)
+			\end{equation*}
+		\end{frame}
+
+	\subsection{Parallelisierung}
+
+		\begin{frame}{Experimentelle Resultate Parallelisierung}
+			\begin{itemize}
+				\item getestet wurde mit einem Tensornetzwerk in Form eines Binärbaumes mit 19 Tensoren und 25\% extra Kanten
+			\end{itemize}
+			\begin{figure}
+				\includegraphics{figure_13}
+			\end{figure} \pause
+			\begin{itemize}
+				\item MC ergibt eine größere Beschleunigung als MS
+				\item bei einer größeren Anzahl an Threads wird die Geschwindigkeitszunahme kleiner
+			\end{itemize}
+		\end{frame}
 	
 	
 	\begin{frame}[allowframebreaks]{Bibliography}
