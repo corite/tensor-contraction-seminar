@@ -95,6 +95,7 @@
 	\item man fängt mit 2er kombinationen der Tensoren an, berechnet jeweils MS und MC
 	\item dann geht man zur nächst größeren Menge (3er, 4er, 5er ... Kombinationen) und macht dasselbe, dabei verwendet man die bereits berechneten Ergebnisse wieder
 	\item wenn man alle durch is sucht man das Minimum der in der letzen Iteration berechneten Werte
+	\item MS und MC berechenen mit Formel aus vorherigem Kapitel
 	\item Suchraum: $O(2^v)$
 }
 
@@ -126,7 +127,7 @@
 \end{frame}
 \note[itemize]{
 	\item 10: iteriere über möglichen Kontraktions-Größen
-	\item 12: iteriere über alle Tensoren im Set
+	\item 12: iteriere über alle Tensoren im Set. Größe des aktuellen Tensor: $S_{T_I}$, Repräsentation dieses Tensors als Zeilenvektor: $R_{T_I}$
 	\item 13: wähle beliebig einen split-case des aktuellen Tensors $T_I$
 	\item 15-16: berechne den Zeilenvektor und Data Size von $T_I$
 	\item 17: Falls neues MS gefunden wurde wird dies gespeichert
@@ -151,14 +152,47 @@
 	\item[$\Rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
 	\item Wenn es im Netzwerk "Subnetzwerke" gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
 }
+\begin{frame}{Pruning - Einführung}
+	\includegraphics[scale=0.25]{figure-6}
+\end{frame}
+\note[itemize]{
+	\item TODO Figure 5 Adjazenzmatrix Struktur
+}
 \begin{frame}{Pruning - Algorithmus}
-
+	\includegraphics[scale=0.25]{algorithm-3}
 \end{frame}
 \note[itemize]{
 	\item someNote
 }
+\section{Ergebnisse}
 
-
+\begin{frame}{Suche mit Pruning}
+	\begin{itemize}
+		\item getestet auf verschiedenen Topologien (Kette, Baum, Radial und Gitter)
+		\item Anzahl zusätzlicher Kanten variabel
+	\end{itemize}
+\end{frame}
+\note[itemize]{
+	\item someNote
+}
+\begin{frame}{Suche mit Pruning - Baseline}
+	\includegraphics[scale=0.25]{table-3}
+\end{frame}
+\note[itemize]{
+	\item 19 Tensoren, keine zusätzlichen Kanten
+	\item pruning verbessert Suchzeiten, bei MC effektiver als bei MS
+	\item Kette ist besser als Baum ist besser als Radial
+}
+\begin{frame}{Suche mit Pruning - Vergleich}
+	\includegraphics[scale=0.2]{figure-9}
+	\includegraphics[scale=0.2]{figure-10}
+\end{frame}
+\note[itemize]{
+	\item fig 9: Vergleich MS vs MC auf verschiedenen Topologien
+	\item bei Baum und Radial abgheschnitten da zu lange suchzeiten (> 150s)
+	\item Kette: hat die meisten prunable tensors, deswegen ist es dort am effektivsten
+	\item 
+}
 
 
 \begin{frame}[allowframebreaks]{Bibliography}

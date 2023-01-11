@@ -1,25 +1,21 @@
 # Themen
 
-add sharing orders?
-
-# Intro [TBD]
+## Intro [Christian]
 - Applications, Goals
-## Prelim
+## Prelim [Christian]
 - Begriffseinführungen (erklären wenn greifbar)
 
 ### tensor network contraction [Christian]
 
 ### Contraction sequence with lowest maximum expense [Max]
 
-### BFS [Max]
-
-// bis hier vorgeplänkel
-
 ## Adjacency matrix-based contraction search
 
 ### Data Structure and Design [Max]
 
-### pruning + bfs [Christian]
+### BFS [Max]
+
+### pruning [Christian]
 
 ### parallelism [Max]
 
@@ -31,6 +27,6 @@ add sharing orders?
 
 ### C [Christian]
 
-## Prior Work [TBD]
+## Prior Work [Max]
 
-## conclusion [TBD]
+## conclusion [Max]
