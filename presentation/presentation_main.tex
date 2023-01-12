@@ -41,7 +41,7 @@
 \begin{document}
 	
 	\maketitle 
-	\begin{frame}{Gliederung}
+	\begin{frame}[allowframebreaks]{Gliederung}
 		\tableofcontents
 	\end{frame}
 	
@@ -52,7 +52,7 @@
 				\column{.5\textwidth}
 					\textbf{Total Contraction Expense (TCE)}
 					\begin{itemize}
-						\item Summe aller Speicher- bzw. Rechenkosten einer Kontraktionsreihenfolge
+						\item Summe aller Speicher- bzw. Rechenkosten einer Kontraktionssequenz
 					\end{itemize}
 					\begin{align*}
 						e_1 &= 10, e_2 = 20, e_3 = 30 \\
@@ -63,7 +63,7 @@
 				\column{.5\textwidth}
 					\textbf{Maximum Contraction Expense (MCE)}
 					\begin{itemize}
-						\item Maximum der Kosten einer Kontraktion in einer Kontraktionsreihenfolge
+						\item Maximum der Kosten einer Kontraktion in einer Kontraktionssequenz
 					\end{itemize}
 					\begin{align*}
 						e_1 &= 10, e_2 = 20, e_3 = 30 \\
@@ -98,7 +98,7 @@
 				MS &= \max_t SE(sq_t)\\ MC &= \max_t CE(sq_t)
 			\end{align*}
 			% nur ein Beispiel
-			Beispiel für eine Kontraktionsreihenfolge:
+			Beispiel für eine Kontraktionssequenz:
 			$sq = ((((\bm{\tau}_{1} \bm{\tau}_{4}) \bm{\tau}_{2}) \bm{\tau}_{3}) \bm{\tau}_{1})$
 		\end{frame}
 
@@ -108,7 +108,7 @@
 		\begin{frame}{Beispielkontraktionen und Berechnung von MC/MS}
 			\begin{figure}
 				\includegraphics{figure_03_a}
-				\caption*{beliebiges Netzwerk mit angegebenen free/sharing orders}
+				\caption*{beliebiges Netzwerk mit angegebenen Free-/Sharing-Orders}
 			\end{figure}
 		\end{frame}
 
@@ -142,7 +142,7 @@
 				\rightarrow sq_{MS} \neq sq_{MC}
 			\end{equation*}
 			\begin{itemize}
-				\item die Kontraktionsreihenfolgen für den kleinsten Speicher- bzw. Rechenaufwand sind nicht zwangsläufig identisch
+				\item die Kontraktionssequenzen für den kleinsten Speicher- bzw. Rechenaufwand sind nicht zwangsläufig identisch
 				\item es muss entschieden werden, was optimiert werden soll
 			\end{itemize}
 		\end{frame}
@@ -335,7 +335,53 @@
 				\item bei einer größeren Anzahl an Threads wird die Geschwindigkeitszunahme kleiner
 			\end{itemize}
 		\end{frame}
-	
+
+	\subsection{Vergleich mit vorheriger Forschung}
+
+		\begin{frame}{Vergleich mit vorheriger Forschung}
+			\begin{itemize}
+				\item es gibt Paper, welche einen Algorithmus zum Approximieren einer optimalen Lösung vorstellen
+				\item ebenfalls gibt es Arbeiten, welche nur auf gewissen Netzwerkanordnungen funktieren
+				\item ein ähnlicher Algorithmus wie der hier vorgestellte ist \mbox{$OP$ \& $\mu_{Cap}$}\cite{op_mu_cap}
+			\end{itemize}
+		\end{frame}
+
+		\begin{frame}{Vergleich mit $OP$ \& $\mu_{Cap}$}
+			\begin{itemize}
+				\item \mbox{$OP$ \& $\mu_{Cap}$} berechnet $CE$ einer Kontraktionssequenz
+				\item \textit{zur Erinnerung:} $CE $ ist normalerweise ähnlich dem maximalen $CE$ einer Kontraktionsreihenfolge, da hier der aufwändigste Kontraktionsschritt ausschlaggebend ist \pause
+				\item verglichen werden die beiden Algorithmen auf einer Binärbaumstruktur mit zufällig gewählten Free- und Sharing-Orders
+			\end{itemize}
+			\begin{equation*}
+				OS = \{O_1, O_2, \ldots, O_n\} \text{, } |OS| = n
+			\end{equation*}
+		\end{frame}
+		
+		\begin{frame}{Vergleich mit $OP$ \& $\mu_{Cap}$}
+			\begin{figure}
+				\includegraphics[scale=1.3]{figure_14_a}
+				\caption*{Vergleich auf Binärbaum ohne extra Kanten}
+			\end{figure}
+		\end{frame}
+
+		\begin{frame}{Vergleich mit $OP$ \& $\mu_{Cap}$}
+			\begin{figure}
+				\includegraphics[scale=1.3]{figure_14_b}
+				\caption*{Vergleich auf Binärbaum mit 25\% extra Kanten}
+			\end{figure}
+		\end{frame}
+		
+
+	\section{Zusammenfassung}	
+
+		\begin{frame}{Zusammenfassung}
+			\begin{itemize}
+				\item Repräsentation der Sharing-Orders logarithmisch
+				\item Adjazenzmatrix mit Zwischenvektoren zum Finden von Sharing-Orders und Outer-Products
+				\item BFS-Algorithmus zum Berechnen von $MC$ oder $MS$, wobei Outer-Products nicht beachtet werden
+				\item Parallelisierung des BFS-Algorithmus ist einfach möglich
+			\end{itemize}
+		\end{frame}
 	
 	\begin{frame}[allowframebreaks]{Bibliography}
 		\bibliography{../bibliography/bibliography.bib}
