@@ -44,7 +44,7 @@
 	\titlepage
 \end{frame}
 
-\begin{frame}{Gliederung}
+\begin{frame}[allowframebreaks=0.8]{Gliederung}
 	\tableofcontents
 \end{frame}
 
@@ -102,7 +102,7 @@
 			\includegraphics[scale=.2]{figure_02_a}
 		\end{column}
 		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.2]{figure_02_b}
+			\includegraphics[scale=.2]{figure_02_b_c}
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -210,7 +210,7 @@
 \end{frame}
 
 
-\section{Beispielkontraktionen und Beispielberechnungen}
+\subsection{Beispiele}
 
 \begin{frame}{Beispielkontraktionen und Berechnung von MC/MS}
 	\begin{figure}
@@ -255,7 +255,7 @@
 \end{frame}
 
 
-\section{$Set_v$ und $Split_v$}
+\section{BFS}
 
 \begin{frame}{$Set_v$ und $Split_v$}
 	\begin{itemize}
@@ -379,7 +379,13 @@
 \end{frame}
 
 
+
+\section{Algorithmus}
+
+
+
 \subsection{Vanilla Search}
+
 \begin{frame}{Sharing Order Calculation}
 	\includegraphics[scale=0.4]{algorithm_01}
 \end{frame}
@@ -390,7 +396,7 @@
 	\item die Menge der Tensoren, aus welchen die inputs (durch vorherige Kontraktionen) entstanden sind
 }
 \begin{frame}{Vanilla Search - Teil 1}
-	\includegraphics[scale=0.2]{algorithm_02_a}
+	\includegraphics[scale=0.2]{algorithm_02_top}
 \end{frame}
 \note[itemize]{
 	\item 1-2: initialisiere Adjazenzmatrix und Lowest Maximum Expense für alle tensoren
@@ -400,7 +406,7 @@
 	\item 6-7: Je nach modus (compute/storage) wird LME unterschiedlich initialisiert
 }
 \begin{frame}{Vanilla Search - Teil 2}
-	\includegraphics[scale=0.25]{algorithm_02_b}
+	\includegraphics[scale=0.25]{algorithm_02_middle}
 \end{frame}
 \note[itemize]{
 	\item 10: iteriere über möglichen Kontraktions-Größen
@@ -411,15 +417,14 @@
 	\item Generell: initialisiert nur variablen, die tatsächliche Berechnung geschieht in Teil 3
 }
 \begin{frame}{Vanilla Search - Teil 3}
-	\includegraphics[scale=0.25]{algorithm_02_c}
+	\includegraphics[scale=0.25]{algorithm_02_bottom}
 \end{frame}
 \note[itemize]{
 	\item WICHTIG: immernoch innerhalb der vorherigen beiden Schleifen
 	\item 21: Iteriere über jeden split case von $T_I$
 }
 
-
-\subsection{Outer Product Pruning}
+\subsection{Pruning}
 \begin{frame}{Pruning - Einührung}
 	\includegraphics[scale=0.2]{figure_03_a}
 \end{frame}
@@ -450,7 +455,6 @@
 \note[itemize]{
 	\item
 }
-\section{Algorithmus}
 \subsection{Parallelisierung}
 
 \begin{frame}{Parallelisierung}
@@ -599,12 +603,4 @@
 	\bibliography{../bibliography/bibliography.bib}
 	\bibliographystyle{unsrt}
 \end{frame}
-
-\begin{frame}[allowframebreaks]{Bibliography}
-	\bibliography{../bibliography/bibliography.bib}
-	\bibliographystyle{splncs04}
-	\nocite{*}
-\end{frame}
-
-
 \end{document}
