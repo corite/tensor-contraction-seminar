@@ -99,10 +99,10 @@
 \begin{frame}{Begriffseinführungen}
 	\begin{columns}
 		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.2]{figure_02_a}
+			\includegraphics[scale=.7]{figure_02_a}
 		\end{column}
 		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.2]{figure_02_b_c}
+			\includegraphics[scale=.7]{figure_02_b_c}
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -136,12 +136,12 @@
 
 \begin{frame}{Kontraktion}
 	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.17]{figure_03_a}
-			$(b) sq=(((\tau_0\tau_1)\tau_2)\tau_3)$
+		\begin{column}{0.4\textwidth}
+			\includegraphics[scale=.65]{figure_03_a}
 		\end{column}
-		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.17]{figure_03_b}
+		\begin{column}{0.6\textwidth}
+			\includegraphics[scale=.7]{figure_03_b}
+			$sq=(((\tau_0\tau_1)\tau_2)\tau_3)$
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -387,7 +387,7 @@
 \subsection{Vanilla Search}
 
 \begin{frame}{Sharing Order Calculation}
-	\includegraphics[scale=0.4]{algorithm_01}
+	\includegraphics[scale=1]{algorithm_01}
 \end{frame}
 \note[itemize]{
 	\item WICHTIG: ab jetzt arbeiten wir auf den Adjazenzmatrizen und nicht auf den tensoren selbst
@@ -396,7 +396,7 @@
 	\item die Menge der Tensoren, aus welchen die inputs (durch vorherige Kontraktionen) entstanden sind
 }
 \begin{frame}{Vanilla Search - Teil 1}
-	\includegraphics[scale=0.2]{algorithm_02_top}
+	\includegraphics[scale=1]{algorithm_02_top}
 \end{frame}
 \note[itemize]{
 	\item 1-2: initialisiere Adjazenzmatrix und Lowest Maximum Expense für alle tensoren
@@ -406,7 +406,7 @@
 	\item 6-7: Je nach modus (compute/storage) wird LME unterschiedlich initialisiert
 }
 \begin{frame}{Vanilla Search - Teil 2}
-	\includegraphics[scale=0.25]{algorithm_02_middle}
+	\includegraphics[scale=1]{algorithm_02_middle}
 \end{frame}
 \note[itemize]{
 	\item 10: iteriere über möglichen Kontraktions-Größen
@@ -417,7 +417,7 @@
 	\item Generell: initialisiert nur variablen, die tatsächliche Berechnung geschieht in Teil 3
 }
 \begin{frame}{Vanilla Search - Teil 3}
-	\includegraphics[scale=0.25]{algorithm_02_bottom}
+	\includegraphics[scale=1]{algorithm_02_bottom}
 \end{frame}
 \note[itemize]{
 	\item WICHTIG: immernoch innerhalb der vorherigen beiden Schleifen
@@ -426,7 +426,7 @@
 
 \subsection{Pruning}
 \begin{frame}{Pruning - Einührung}
-	\includegraphics[scale=0.2]{figure_03_a}
+	\includegraphics[scale=1]{figure_03_a}
 \end{frame}
 \note[itemize]{
 	\item outer product: multiplikation von Tensoren ohne sharing Orders (siehe $\tau_2, \tau_3$)
@@ -435,7 +435,7 @@
 	\item Wenn es im Netzwerk "Subnetzwerke" gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
 }
 \begin{frame}{Pruning - Einführung}
-	\includegraphics[scale=0.25]{figure_06}
+	\includegraphics[scale=1]{figure_06}
 \end{frame}
 \note[itemize]{
 	\item Intra-redundant: innerhalb eines Set
@@ -443,14 +443,14 @@
 }
 
 \begin{frame}{Pruning - Adjazenzmatrix}
-	\includegraphics[scale=0.2]{figure_05}
+	\includegraphics[scale=.6]{figure_05}
 \end{frame}
 \note[itemize]{
 	\item TODO Figure 5 Adjazenzmatrix Struktur
 }
 
 \begin{frame}{Pruning - Algorithmus}
-	\includegraphics[scale=0.25]{algorithm_03}
+	\includegraphics[scale=1]{algorithm_03}
 \end{frame}
 \note[itemize]{
 	\item
@@ -499,8 +499,8 @@
 	\item Kette ist besser als Baum ist besser als Radial
 }
 \begin{frame}{Suche - Kette, Baum, Radial}
-	\includegraphics[scale=0.2]{figure_09}
-	\includegraphics[scale=0.2]{figure_10}
+	\includegraphics[scale=.6]{figure_09}
+	\includegraphics[scale=.6]{figure_10}
 \end{frame}
 \note[itemize]{
 	\item fig 9: Vergleich MS vs MC auf verschiedenen Topologien
@@ -509,7 +509,7 @@
 	\item
 }
 \begin{frame}{Suche - Gitter}
-	\includegraphics[scale=0.2]{figure_11}
+	\includegraphics[scale=1]{figure_11}
 \end{frame}
 \note[itemize]{
 	\item
