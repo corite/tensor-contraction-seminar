@@ -488,6 +488,29 @@
 
 \section{Ergebnisse}
 
+
+\begin{frame}{Experimentelle Resultate Vanilla Search}
+	\begin{itemize}
+		\item die für das Testen verwendeten Tensornetzwerke sind komplett vernetzt
+	\end{itemize}
+	\begin{figure}
+		\includegraphics{figure_08}
+	\end{figure} \pause
+	$\rightarrow$ MS Vanilla ist schneller als MC Vanilla
+\end{frame}
+
+\begin{frame}{Experimentelle Resultate Vanilla Search}
+	\begin{itemize}
+		\item ein zusätzlicher Tensor führt ungefähr zu einer Verdreifachung der Suchzeit
+	\end{itemize}
+	\begin{figure}
+		\includegraphics{table_02}
+	\end{figure}
+	\begin{equation*}
+		Split_{total} = \sum^V_{v=1} \binom{V}{v} \cdot Split_v = \sum^v_{v=1} \binom{V}{v} \cdot \mathcal{O} \left(2^V \right) = \mathcal{O} \left(3^V \right)
+	\end{equation*}
+\end{frame}
+
 \begin{frame}{Benchmarks}
 	\begin{itemize}
 		\item getestet auf verschiedenen Topologien (Kette, Baum, Radial und Gitter)
@@ -522,27 +545,6 @@
 	\item
 }
 
-\begin{frame}{Experimentelle Resultate Vanilla Search}
-	\begin{itemize}
-		\item die für das Testen verwendeten Tensornetzwerke sind komplett vernetzt
-	\end{itemize}
-	\begin{figure}
-		\includegraphics{figure_08}
-	\end{figure} \pause
-	$\rightarrow$ MS Vanilla ist schneller als MC Vanilla
-\end{frame}
-
-\begin{frame}{Experimentelle Resultate Vanilla Search}
-	\begin{itemize}
-		\item ein zusätzlicher Tensor führt ungefähr zu einer Verdreifachung der Suchzeit
-	\end{itemize}
-	\begin{figure}
-		\includegraphics{table_02}
-	\end{figure}
-	\begin{equation*}
-		Split_{total} = \sum^V_{v=1} \binom{V}{v} \cdot Split_v = \sum^v_{v=1} \binom{V}{v} \cdot \mathcal{O} \left(2^V \right) = \mathcal{O} \left(3^V \right)
-	\end{equation*}
-\end{frame}
 
 \subsection{Parallelisierung}
 
