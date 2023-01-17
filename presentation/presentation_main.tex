@@ -23,7 +23,7 @@
 %bibliography numbers
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 
-\setbeameroption{show notes} % comment out for the real presentation
+%\setbeameroption{show notes} % comment out for the real presentation
 \graphicspath{{./pictures_eps}}
 
 
@@ -36,7 +36,8 @@
 
 \date{20. Januar 2023}
 
-\newcommand{\Tau}{\mathcal{T}}
+\newcommand{\Tau}{\bm{\mathcal{T}}}
+\newcommand{\tauB}{\bm{\tau}}
 
 \begin{document}
 
@@ -58,7 +59,7 @@
 	\end{itemize}
 \end{frame}
 
-\begin{frame}{Zielsetung}
+\begin{frame}{Zielsetzung}
 	\begin{itemize}
 		\item Entwurf eines universalen Algorithmus \begin{itemize}
 			      \item effiziente Datenstruktur für die Suche
@@ -76,7 +77,7 @@
 	\begin{columns}
 		\begin{column}{0.5\textwidth}
 			\begin{itemize}
-				\item $\tau$: Tensor
+				\item $\tauB$: Tensor
 				\item $\Tau_I$: Ergebnis-Tensor aus der Kontraktion der Tensoren $I$
 				\item $FO_{\Tau_I}$: Free Orders von $\Tau_I$
 				\item $SO_{\Tau_I}$: Sharing Orders von $\Tau_I$
@@ -99,10 +100,10 @@
 \begin{frame}{Begriffseinführungen}
 	\begin{columns}
 		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.2]{figure_02_a}
+			\includegraphics[scale=.7]{figure_02_a}
 		\end{column}
 		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.2]{figure_02_b_c}
+			\includegraphics[scale=.7]{figure_02_b_c}
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -110,7 +111,7 @@
 	\item a:
 	\item Graph-Notation: Kanten=Dimensionen (Order), Knoten=Tensoren
 	\item b:
-	\item Kanten zwischen Knoten "Sharing Orders", sonst "Free Orders"
+	\item Kanten zwischen Knoten \glqq{}Sharing Orders\grqq, sonst \glqq{}Free Orders\grqq
 	\item Nach der Kontraktion bleiben nur Free Orders übrig
 	\item c:
 	\item Kantengewicht: $\log_2$ der Order (Vereinfachung der Rechnung)
@@ -136,12 +137,12 @@
 
 \begin{frame}{Kontraktion}
 	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.17]{figure_03_a}
-			$(b) sq=(((\tau_0\tau_1)\tau_2)\tau_3)$
+		\begin{column}{0.4\textwidth}
+			\includegraphics[scale=.65]{figure_03_a}
 		\end{column}
-		\begin{column}{0.5\textwidth}
-			\includegraphics[scale=.17]{figure_03_b}
+		\begin{column}{0.6\textwidth}
+			\includegraphics[scale=.7]{figure_03_b}
+			$sq=(((\tauB_0\tauB_1)\tauB_2)\tauB_3)$
 		\end{column}
 	\end{columns}
 \end{frame}
@@ -206,7 +207,7 @@
 	\end{align*}
 	% nur ein Beispiel
 	Beispiel für eine Kontraktionssequenz:
-	$sq = ((((\bm{\tau}_{1} \bm{\tau}_{4}) \bm{\tau}_{2}) \bm{\tau}_{3}) \bm{\tau}_{1})$
+	$sq = ((((\tauB_{1} \tauB_{4}) \tauB_{2}) \tauB_{3}) \tauB_{1})$
 \end{frame}
 
 
@@ -242,8 +243,8 @@
 
 \begin{frame}{Beispielkontraktionen und Berechnung von MC/MS}
 	\begin{align*}
-		sq_{MS} & = (((\bm{\tau}_{0} \bm{\tau}_{3}) \bm{\tau}_{2}) \bm{\tau}_{1}) \\
-		sq_{MC} & = (((\bm{\tau}_{0} \bm{\tau}_{3}) \bm{\tau}_{1}) \bm{\tau}_{2})
+		sq_{MS} & = (((\tauB_{0} \tauB_{3}) \tauB_{2}) \tauB_{1}) \\
+		sq_{MC} & = (((\tauB_{0} \tauB_{3}) \tauB_{1}) \tauB_{2})
 	\end{align*}
 	\begin{equation*}
 		\rightarrow sq_{MS} \neq sq_{MC}
@@ -255,19 +256,19 @@
 \end{frame}
 
 
-\section{BFS}
+\subsection{BFS}
 
 \begin{frame}{$Set_v$ und $Split_v$}
 	\begin{itemize}
 		\item $Set_v$ ist die Menge aller möglichen Tensoren, welche aus $v$ ursprünglichen Tensoren kontrahiert wurden in einem Netzwerk mit $V$ Tensoren
-		\item für $V = 3$ ist $Set_2 = \{\bm{T}_{01}, \bm{T_}{02}, \bm{T}_{12} \}$ und $Set_3 = \{\bm{T}_{012} \}$
+		\item für $V = 3$ ist $Set_2 = \{\Tau_{01}, \Tau_{02}, \Tau_{12} \}$ und $Set_3 = \{\Tau_{012} \}$
 	\end{itemize}
 \end{frame}
 
 \begin{frame}{$Set_v$ und $Split_v$}
 	\begin{itemize}
 		\item jeder Tensor aus $Set_v$ kann auf $Split_v$ verschiedene Arten in einem Schritt aus zwei verschiedenen Teiltensoren kontrahiert werden
-		\item der Tensor $\bm{T}_{012} \in Set_3$ kann kontrahiert werden aus $\{\bm{\tau}_0, \bm{T}_{02} \}$, $\{\bm{\tau}_{1}, \bm{T}_{02} \}$ oder $\{\bm{\tau}_{2}, \bm{T}_{01} \}$ $\rightarrow Split_3 = 3$
+		\item der Tensor $\Tau_{012} \in Set_3$ kann kontrahiert werden aus $\{\tauB_0, \Tau_{02} \}$, $\{\tauB_{1}, \Tau_{02} \}$ oder $\{\tauB_{2}, \Tau_{01} \}$ $\rightarrow Split_3 = 3$
 	\end{itemize}
 	\begin{align*}
 		Split_v & = \begin{cases}
@@ -276,6 +277,13 @@
 		            \end{cases} \\
 		        & = \frac{2^v - 2}{2} = \mathcal{O}(2^v)
 	\end{align*}
+\end{frame}
+
+\begin{frame}{$Set_v$ und $Split_v$}
+	\begin{figure}
+		\includegraphics{figure_04}
+		\caption*{Breitensuche über alle Tensoren aller $Set_v$ für $v=1, v=2, v=3$}
+	\end{figure}
 \end{frame}
 
 
@@ -287,7 +295,7 @@
 		\item das Tensorennetzerk wird als ein ungerichteter Graph angesehen
 		\item es wird eine Adjazenzmatrix verwendet, um die Sharing-Orders zu speichern und auf sie zuzugreifen
 		\item die Matrix ist hierbei nicht symmetrisch,
-		      sondern es gilt $SO_{\bm{\tau}_i \bm{\tau}_j} = E_{\bm{\tau}_i \bm{\tau}_j} + E_{\bm{\tau}_j \bm{\tau}_i}$, wobei $E_{\bm{\tau}_a \bm{\tau}_b}$ der jeweilige Eintrag in der Zeile von $\bm{\tau}_a$ und Spalte von $\bm{\tau}_b$ ist und $E_{\bm{\tau}_a \bm{\tau}_b} \in \mathbb{N}_0$.
+		      sondern es gilt $SO_{\tauB_i \tauB_j} = E_{\tauB_i \tauB_j} + E_{\tauB_j \tauB_i}$, wobei $E_{\tauB_a \tauB_b}$ der jeweilige Eintrag in der Zeile von $\tauB_a$ und Spalte von $\tauB_b$ ist und $E_{\tauB_a \tauB_b} \in \mathbb{N}_0$.
 	\end{itemize}
 	\begin{figure}
 		\includegraphics{figure_05_a}
@@ -311,8 +319,8 @@
 
 \begin{frame}{Zeilenvektoren von zusammengesetzten Tensoren}
 	\begin{itemize}
-		\item \textit{zur Erinnerung:} $SO_{\bm{T}_I \bm{T}_J} = \sum_m \log_k N^m_{\bm{T}_I \bm{T}_J}$
-		\item somit ist beispielsweise $SO_{\bm{\tau}_1 \bm{T}_{02}} = SO_{\bm{\tau}_1 \bm{\tau}_0} + SO_{\bm{\tau}_1 \bm{\tau}_2}$
+		\item \textit{zur Erinnerung:} $SO_{\Tau_I \Tau_J} = \sum_m \log_k N^m_{\Tau_I \Tau_J}$
+		\item somit ist beispielsweise $SO_{\tauB_1 \Tau_{02}} = SO_{\tauB_1 \tauB_0} + SO_{\tauB_1 \tauB_2}$
 	\end{itemize} \pause
 
 	\begin{figure}
@@ -328,7 +336,7 @@
 		\includegraphics[scale=1.1]{figure_05_b_d}
 	\end{figure} \pause
 	\begin{equation*}
-		SO_{\bm{T}_{02} \bm{\tau}_1} = R_{\bm{T}_{02}}[1] + R_{\bm{\tau}_1}[0] + R_{\bm{\tau}_1}[2]
+		SO_{\Tau_{02} \tauB_1} = R_{\Tau_{02}}[1] + R_{\tauB_1}[0] + R_{\tauB_1}[2]
 	\end{equation*}
 \end{frame}
 
@@ -338,13 +346,13 @@
 		\item dies ermöglicht eine effiziente Berechnung von Zeilenvektoren größerer Tensoren und somit deren Shared-Orders
 	\end{itemize}
 	\begin{equation*}
-		R_{\bm{T}_I} = R_{\bm{T}_J} + R_{\bm{T}_K}, J \cup K = I \wedge J \cap K = \emptyset
+		R_{\Tau_I} = R_{\Tau_J} + R_{\Tau_K}, J \cup K = I \wedge J \cap K = \emptyset
 	\end{equation*} \pause
 	\begin{itemize}
 		\item auch der $SE$ eines Tensors wird mit Hilfe eines beliebigen Split-Cases berechnet und gespeichert
 	\end{itemize}
 	\begin{equation*}
-		SE_{\bm{T}_I \bm{T}_J} = S_{\bm{T}_{I}} + S_{\bm{T}_{J}} - 2SO_{\bm{T}_I \bm{T}_J}
+		SE_{\Tau_I \Tau_J} = S_{\Tau_{I}} + S_{\Tau_{J}} - 2SO_{\Tau_I \Tau_J}
 	\end{equation*}
 \end{frame}
 
@@ -356,7 +364,7 @@
 		\item es wird eine ähnliche Datensturktur wie zuvor verwendet, um Outer-Products zu finden
 	\end{itemize} \pause
 	\begin{equation*}
-		\rightarrow \text{zu finden sind Tensoren, sodass } SO_{\bm{T}_I \bm{T}_J} = 0
+		\rightarrow \text{zu finden sind Tensoren, sodass } SO_{\Tau_I \Tau_J} = 0
 	\end{equation*}
 \end{frame}
 
@@ -371,10 +379,10 @@
 
 \begin{frame}{Finden von Outer-Products}
 	\begin{itemize}
-		\item es wird ein Zeilenvektor $O_{\bm{T}_I}$ berechnet
-		\item an den Spalten (und den dazugehörigen Tensoren), welche gleich $0$ sind, sind die Tensoren ablesbar, welche keine Sharing-Orders mit $\bm{T}_I$ haben
+		\item es wird ein Zeilenvektor $O_{\Tau_I}$ berechnet
+		\item an den Spalten (und den dazugehörigen Tensoren), welche gleich $0$ sind, sind die Tensoren ablesbar, welche keine Sharing-Orders mit $\Tau_I$ haben
 		\item diese können im späteren Algorithmus ignoriert werden \pause
-		\item die Diagonale der verwendeten Matrix ist $1$, damit Tensoren, welche sich schon in der Menge $I$ aus $\bm{T}_I$ befinden, grundsätzlich einen Wert größer $0$ in $O_{\bm{T}_I}$ haben
+		\item die Diagonale der verwendeten Matrix ist $1$, damit Tensoren, welche sich schon in der Menge $I$ aus $\Tau_I$ befinden, grundsätzlich einen Wert größer $0$ in $O_{\Tau_I}$ haben
 	\end{itemize}
 \end{frame}
 
@@ -387,7 +395,7 @@
 \subsection{Vanilla Search}
 
 \begin{frame}{Sharing Order Calculation}
-	\includegraphics[scale=0.4]{algorithm_01}
+	\includegraphics[scale=1]{algorithm_01}
 \end{frame}
 \note[itemize]{
 	\item WICHTIG: ab jetzt arbeiten wir auf den Adjazenzmatrizen und nicht auf den tensoren selbst
@@ -396,7 +404,7 @@
 	\item die Menge der Tensoren, aus welchen die inputs (durch vorherige Kontraktionen) entstanden sind
 }
 \begin{frame}{Vanilla Search - Teil 1}
-	\includegraphics[scale=0.2]{algorithm_02_top}
+	\includegraphics[scale=1]{algorithm_02_top}
 \end{frame}
 \note[itemize]{
 	\item 1-2: initialisiere Adjazenzmatrix und Lowest Maximum Expense für alle tensoren
@@ -406,7 +414,7 @@
 	\item 6-7: Je nach modus (compute/storage) wird LME unterschiedlich initialisiert
 }
 \begin{frame}{Vanilla Search - Teil 2}
-	\includegraphics[scale=0.25]{algorithm_02_middle}
+	\includegraphics[scale=1]{algorithm_02_middle}
 \end{frame}
 \note[itemize]{
 	\item 10: iteriere über möglichen Kontraktions-Größen
@@ -417,7 +425,7 @@
 	\item Generell: initialisiert nur variablen, die tatsächliche Berechnung geschieht in Teil 3
 }
 \begin{frame}{Vanilla Search - Teil 3}
-	\includegraphics[scale=0.25]{algorithm_02_bottom}
+	\includegraphics[scale=1]{algorithm_02_bottom}
 \end{frame}
 \note[itemize]{
 	\item WICHTIG: immernoch innerhalb der vorherigen beiden Schleifen
@@ -426,31 +434,24 @@
 
 \subsection{Pruning}
 \begin{frame}{Pruning - Einührung}
-	\includegraphics[scale=0.2]{figure_03_a}
+	\includegraphics[scale=1]{figure_03_a}
 \end{frame}
 \note[itemize]{
-	\item outer product: multiplikation von Tensoren ohne sharing Orders (siehe $\tau_2, \tau_3$)
+	\item outer product: multiplikation von Tensoren ohne sharing Orders (siehe $\tauB_2, \tauB_3$)
 	\item es ist bewiesen dass die beste Kontraktion (kleinste MS / MC) immer ohne outer - products auskommt
 	\item[$\Rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
 	\item Wenn es im Netzwerk "Subnetzwerke" gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
 }
 \begin{frame}{Pruning - Einführung}
-	\includegraphics[scale=0.25]{figure_06}
+	\includegraphics[scale=1]{figure_06}
 \end{frame}
 \note[itemize]{
 	\item Intra-redundant: innerhalb eines Set
 	\item Inter-redundant: zwischen verschiedenen Sets
 }
 
-\begin{frame}{Pruning - Adjazenzmatrix}
-	\includegraphics[scale=0.2]{figure_05}
-\end{frame}
-\note[itemize]{
-	\item TODO Figure 5 Adjazenzmatrix Struktur
-}
-
 \begin{frame}{Pruning - Algorithmus}
-	\includegraphics[scale=0.25]{algorithm_03}
+	\includegraphics[scale=1]{algorithm_03}
 \end{frame}
 \note[itemize]{
 	\item
@@ -472,7 +473,7 @@
 		\item in der \textit{vanilla search} gibt es keine Speicherkonflikte, denn es werden nur für die Tensoren spezifische Werte ausgerechnet: Speicherkosten, Zeilenvektoren, LME \pause
 		\item in der \textit{Suche mit Weglassen von Outer-Products} werden zusätzlich noch die Outer-Product-Vektoren der Tensoren berechnet, was ebenfalls tensorenspezifische Werte sind
 		\item unterschiedliche Threads mit unterschiedlichen Tensoren finden möglicherweise einen gleichen Tensor, welcher nicht beachtet werden muss
-		\item somit wird gleichzeitig auf das gleiche $P_{\bm{T}_I}$ geschrieben, jedoch immer mit demselben Datum
+		\item somit wird gleichzeitig auf das gleiche $P_{\Tau_I}$ geschrieben, jedoch immer mit demselben Datum
 	\end{itemize} \pause
 	$\rightarrow$ keine Speicherkonflikte
 \end{frame}
@@ -481,39 +482,6 @@
 
 \section{Ergebnisse}
 
-\begin{frame}{Benchmarks}
-	\begin{itemize}
-		\item getestet auf verschiedenen Topologien (Kette, Baum, Radial und Gitter)
-		\item Anzahl zusätzlicher Kanten variabel
-	\end{itemize}
-\end{frame}
-\note[itemize]{
-	\item
-}
-\begin{frame}{Suche - Baseline}
-	\includegraphics[scale=0.25]{table_03}
-\end{frame}
-\note[itemize]{
-	\item 19 Tensoren, keine zusätzlichen Kanten
-	\item pruning verbessert Suchzeiten, bei MC effektiver als bei MS
-	\item Kette ist besser als Baum ist besser als Radial
-}
-\begin{frame}{Suche - Kette, Baum, Radial}
-	\includegraphics[scale=0.2]{figure_09}
-	\includegraphics[scale=0.2]{figure_10}
-\end{frame}
-\note[itemize]{
-	\item fig 9: Vergleich MS vs MC auf verschiedenen Topologien
-	\item bei Baum und Radial abgheschnitten da zu lange suchzeiten (> 150s)
-	\item Kette: hat die meisten prunable tensors, deswegen ist es dort am effektivsten
-	\item
-}
-\begin{frame}{Suche - Gitter}
-	\includegraphics[scale=0.2]{figure_11}
-\end{frame}
-\note[itemize]{
-	\item
-}
 
 \begin{frame}{Experimentelle Resultate Vanilla Search}
 	\begin{itemize}
@@ -536,6 +504,41 @@
 		Split_{total} = \sum^V_{v=1} \binom{V}{v} \cdot Split_v = \sum^v_{v=1} \binom{V}{v} \cdot \mathcal{O} \left(2^V \right) = \mathcal{O} \left(3^V \right)
 	\end{equation*}
 \end{frame}
+
+\begin{frame}{Benchmarks}
+	\begin{itemize}
+		\item getestet auf verschiedenen Topologien (Kette, Baum, Radial und Gitter)
+		\item Anzahl zusätzlicher Kanten variabel
+	\end{itemize}
+\end{frame}
+\note[itemize]{
+	\item
+}
+\begin{frame}{Suche - Baseline}
+	\includegraphics[scale=1]{table_03}
+\end{frame}
+\note[itemize]{
+	\item 19 Tensoren, keine zusätzlichen Kanten
+	\item pruning verbessert Suchzeiten, bei MC effektiver als bei MS
+	\item Kette ist besser als Baum ist besser als Radial
+}
+\begin{frame}{Suche - Kette, Baum, Radial}
+	\includegraphics[scale=.6]{figure_09}
+	\includegraphics[scale=.6]{figure_10}
+\end{frame}
+\note[itemize]{
+	\item fig 9: Vergleich MS vs MC auf verschiedenen Topologien
+	\item bei Baum und Radial abgheschnitten da zu lange suchzeiten (> 150s)
+	\item Kette: hat die meisten prunable tensors, deswegen ist es dort am effektivsten
+	\item
+}
+\begin{frame}{Suche - Gitter}
+	\includegraphics[scale=1]{figure_11}
+\end{frame}
+\note[itemize]{
+	\item
+}
+
 
 \subsection{Parallelisierung}
 
