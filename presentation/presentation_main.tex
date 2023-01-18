@@ -61,8 +61,8 @@
 \begin{frame}{Zielsetung}
 	\begin{itemize}
 		\item Entwurf eines universalen Algorithmus \begin{itemize}
+				  \item für alle Netzwerktopologien anwendbar
 			      \item effiziente Datenstruktur für die Suche
-			      \item für alle Netzwerktopologien anwendbar
 			      \item Multithreading für bessere reale Performanz
 		      \end{itemize}
 		\item[$\Rightarrow$] Benchmarks
@@ -71,30 +71,6 @@
 
 \section{Tensor-Kontraktionen}
 \subsection{Allgemeines}
-
-\begin{frame}{Begriffseinführungen}
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\begin{itemize}
-				\item $\tau$: Tensor
-				\item $\Tau_I$: Ergebnis-Tensor aus der Kontraktion der Tensoren $I$
-				\item $FO_{\Tau_I}$: Free Orders von $\Tau_I$
-				\item $SO_{\Tau_I}$: Sharing Orders von $\Tau_I$
-			\end{itemize}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\begin{itemize}
-				\item $SE_{\Tau_I}$: Storage Expense von $\Tau_I$
-				\item $CE_{\Tau_I}$: Storage Expense von $\Tau_I$
-				\item $MS$: Maximale $SE$ einer Kontraktion
-				\item $MC$: Maximale $CE$ einer Kontraktion
-			\end{itemize}
-		\end{column}
-	\end{columns}
-\end{frame}
-\note[itemize]{
-	\item CE: Anzahl der Multiplikationen
-}
 
 \begin{frame}{Begriffseinführungen}
 	\begin{columns}
@@ -116,6 +92,32 @@
 	\item Kantengewicht: $\log_2$ der Order (Vereinfachung der Rechnung)
 }
 
+\begin{frame}{Begriffseinführungen}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item $\tau$: Tensor
+				\item $\Tau_I$: Ergebnis-Tensor aus der Kontraktion der Tensoren $I$
+				\item $FO_{\Tau_I}$: Free Orders von $\Tau_I$
+				\item $SO_{\Tau_I\Tau_J}$: Sharing Orders von $\Tau_I$
+			\end{itemize}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\begin{itemize}
+				\item $SE_{\Tau_I}$: Storage Expense von $\Tau_I$
+				\item $CE_{\Tau_I\Tau_J}$: Compute Expense von $\Tau_I$
+				\item $MS$: Maximale $SE$ einer Kontraktion
+				\item $MC$: Maximale $CE$ einer Kontraktion
+			\end{itemize}
+		\end{column}
+	\end{columns}
+\end{frame}
+\note[itemize]{
+	\item CE: Anzahl der Multiplikationen
+}
+
+
+
 \begin{frame}{Formeln}
 	\begin{equation}
 		FO_{\Tau_I}=\sum\limits_m \log_k N_{\Tau_I}^m, N_{\Tau_I}^m \in \text{ free orders of } \Tau_I
@@ -133,22 +135,8 @@
 		CE_{\Tau_I\Tau_J}=S_{\Tau_I}+S_{\Tau_J}-SO_{\Tau_I\Tau_J}=S_{\Tau_{IJ}}+SO_{\Tau_I\Tau_J}
 	\end{equation}
 \end{frame}
-
-\begin{frame}{Kontraktion}
-	\begin{columns}
-		\begin{column}{0.4\textwidth}
-			\includegraphics[scale=.65]{figure_03_a}
-		\end{column}
-		\begin{column}{0.6\textwidth}
-			\includegraphics[scale=.7]{figure_03_b}
-			$sq=(((\tau_0\tau_1)\tau_2)\tau_3)$
-		\end{column}
-	\end{columns}
-\end{frame}
 \note[itemize]{
-	\item bei K Tensoren immer K-1 Kontraktionsschritte
-	\item verschiedene Kontraktionsreihenfolgen
-	\item bei jedem Schritt wird eine sharing order eliminiert
+	\item TODO was soll Ich hierzu sagen?
 }
 
 \subsection{Evaluationsmetriken}
@@ -387,6 +375,8 @@
 \subsection{Vanilla Search}
 
 \begin{frame}{Sharing Order Calculation}
+	\includegraphics[scale=1]{figure_05_a}
+
 	\includegraphics[scale=1]{algorithm_01}
 \end{frame}
 \note[itemize]{
@@ -399,9 +389,9 @@
 	\includegraphics[scale=1]{algorithm_02_top}
 \end{frame}
 \note[itemize]{
-	\item 1-2: initialisiere Adjazenzmatrix und Lowest Maximum Expense für alle tensoren
+	\item 1-2: initialisiere Adjazenzmatrix und Lowest Maximum Expense für alle grund-tensoren $\tau$, nicht $\Tau$
 	\item 3: iteriere über alle Tensoren im Netzwerk
-	\item 4: speichere die Größe des Tensors (Data Size)
+	\item 4: speichere die Größe des Tensors (Data Size) = Summe SO + Summe FO
 	\item 5: speichere Zeilenvektor aus Adjazenzmatrix
 	\item 6-7: Je nach modus (compute/storage) wird LME unterschiedlich initialisiert
 }
@@ -410,10 +400,10 @@
 \end{frame}
 \note[itemize]{
 	\item 10: iteriere über möglichen Kontraktions-Größen
-	\item 12: iteriere über alle Tensoren im Set. Größe des aktuellen Tensor: $S_{T_I}$, Repräsentation dieses Tensors als Zeilenvektor: $R_{T_I}$
-	\item 13: wähle beliebig einen split-case des aktuellen Tensors $T_I$
+	\item 12: iteriere über alle zusammengesetzten Tensoren $\Tau$ im Set. Größe des aktuellen Tensor: $S_{T_I}$, Repräsentation dieses Tensors als Zeilenvektor: $R_{T_I}$
+	\item 13: wähle beliebig einen split-case des aktuellen Tensors $T_I$ und berechne und speichere die gleichen werte wie für $\tau$
 	\item 15-16: berechne den Zeilenvektor und Data Size von $T_I$
-	\item 17: Falls neues MS gefunden wurde wird dies gespeichert
+	\item 17: $S_{\Tau_I}$ speichern, da sich der Wert bei den anderen Split-cases nicht mehr ändert
 	\item Generell: initialisiert nur variablen, die tatsächliche Berechnung geschieht in Teil 3
 }
 \begin{frame}{Vanilla Search - Teil 3}
@@ -422,6 +412,10 @@
 \note[itemize]{
 	\item WICHTIG: immernoch innerhalb der vorherigen beiden Schleifen
 	\item 21: Iteriere über jeden split case von $T_I$
+	\item LME bei $\tau$ $S_{\tau} (MS)$, 0 (MC), sonst MAX\_FLOAT
+	\item 27: bestimmung von ME. Da in den LME's bereits das maximum aller darin enthaltenen Kontraktionen steht, müssen nur diese 3 Werte verglichen werden
+	\item 28: update wenn neues LME gefunden wurde
+	\item 32: ???
 }
 
 \subsection{Pruning}
@@ -432,7 +426,7 @@
 	\item outer product: multiplikation von Tensoren ohne sharing Orders (siehe $\tau_2, \tau_3$)
 	\item es ist bewiesen dass die beste Kontraktion (kleinste MS / MC) immer ohne outer - products auskommt
 	\item[$\Rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
-	\item Wenn es im Netzwerk "Subnetzwerke" gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
+	\item Wenn es im Netzwerk \glqq{}Subnetzwerke\grqq gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
 }
 \begin{frame}{Pruning - Einführung}
 	\includegraphics[scale=1]{figure_06}
@@ -446,7 +440,7 @@
 	\includegraphics[scale=1]{algorithm_03}
 \end{frame}
 \note[itemize]{
-	\item
+	\item optimierung für inter-redundante tensoren
 }
 \subsection{Parallelisierung}
 
@@ -474,16 +468,12 @@
 
 \section{Ergebnisse}
 
-\begin{frame}{Benchmarks}
+\begin{frame}{Suche - Baseline}
 	\begin{itemize}
 		\item getestet auf verschiedenen Topologien (Kette, Baum, Radial und Gitter)
 		\item Anzahl zusätzlicher Kanten variabel
 	\end{itemize}
-\end{frame}
-\note[itemize]{
-	\item
-}
-\begin{frame}{Suche - Baseline}
+
 	\includegraphics[scale=1]{table_03}
 \end{frame}
 \note[itemize]{
