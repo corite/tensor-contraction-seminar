@@ -52,10 +52,10 @@
 \section{Einführung und Zielsetzung}
 \begin{frame}{Einführung}
 	\begin{itemize}
-		\item viele Anwendungen: Quantenphysik, Machine Learning, Entwurf von elektrischen Schaltungen
+		\item viele Anwendungen: Quantenphysik, Maschinelles Lernen, Entwurf von elektrischen Schaltungen
 		\item Reihenfolge der Kontraktionen beeinflusst sowohl Speicher als auch Rechenaufwand
 		\item Problem: das Finden der optimalen Reihenfolge ist NP-hart
-		\item[$\Rightarrow$] Heuristiken
+		\item[$\rightarrow$] Heuristiken
 	\end{itemize}
 \end{frame}
 
@@ -66,7 +66,7 @@
 			      \item effiziente Datenstruktur für die Suche
 			      \item Multithreading für bessere reale Performanz
 		      \end{itemize}
-		\item[$\Rightarrow$] Benchmarks
+		\item[$\rightarrow$] Benchmarks
 	\end{itemize}
 \end{frame}
 
@@ -87,8 +87,8 @@
 	\item a:
 	\item Graph-Notation: Kanten=Dimensionen (Order), Knoten=Tensoren
 	\item b:
-	\item Kanten zwischen Knoten \glqq{}Sharing Orders\grqq, sonst \glqq{}Free Orders\grqq
-	\item Nach der Kontraktion bleiben nur Free Orders übrig
+	\item Kanten zwischen Knoten \glqq{}Sharing-Orders\grqq, sonst \glqq{}Free-Orders\grqq
+	\item Nach der Kontraktion bleiben nur Free-Orders übrig
 	\item c:
 	\item Kantengewicht: $\log_2$ der Order (Vereinfachung der Rechnung)
 }
@@ -99,14 +99,14 @@
 			\begin{itemize}
 				\item $\tauB$: Tensor
 				\item $\Tau_I$: Ergebnis-Tensor aus der Kontraktion der Tensoren $I$
-				\item $FO_{\Tau_I}$: Free Orders von $\Tau_I$
-				\item $SO_{\Tau_I\Tau_J}$: Sharing Orders von $\Tau_I$
+				\item $FO_{\Tau_I}$: Free-Orders von $\Tau_I$
+				\item $SO_{\Tau_I\Tau_J}$: Sharing-Orders von $\Tau_I\Tau_J$
 			\end{itemize}
 		\end{column}
 		\begin{column}{0.5\textwidth}
 			\begin{itemize}
-				\item $SE_{\Tau_I}$: Storage Expense von $\Tau_I$
-				\item $CE_{\Tau_I\Tau_J}$: Compute Expense von $\Tau_I$
+				\item $SE_{\Tau_I}$: Storage-Expense von $\Tau_I$
+				\item $CE_{\Tau_I\Tau_J}$: Compute-Expense von $\Tau_I\Tau_J$
 				\item $MS$: Maximale $SE$ einer Kontraktion
 				\item $MC$: Maximale $CE$ einer Kontraktion
 			\end{itemize}
@@ -159,7 +159,7 @@
 	\begin{columns}[]
 
 		\column{.5\textwidth}
-		\textbf{Total Contraction Expense (TCE)}
+		\textbf{Total-Contraction-Expense (TCE)}
 		\begin{itemize}
 			\item Summe aller Speicher- bzw. Rechenkosten einer Kontraktionssequenz
 		\end{itemize}
@@ -170,7 +170,7 @@
 
 
 		\column{.5\textwidth}
-		\textbf{Maximum Contraction Expense (MCE)}
+		\textbf{Maximum-Contraction-Expense (MCE)}
 		\begin{itemize}
 			\item Maximum der Kosten einer Kontraktion in einer Kontraktionssequenz
 		\end{itemize}
@@ -184,7 +184,7 @@
 \begin{frame}{Unterschiedliche Evaluationsmetriken}
 	\begin{columns}
 		\column{.5\textwidth}
-		\textbf{Total Contraction Expense (TCE)}
+		\textbf{Total-Contraction-Expense (TCE)}
 		\begin{itemize}
 			\item genauer als nur das Maximum zu bestimmen
 			\item langsamer
@@ -192,7 +192,7 @@
 
 
 		\column{.5\textwidth}
-		\textbf{Maximum Contraction Expense (MCE)}
+		\textbf{Maximum-Contraction-Expense (MCE)}
 		\begin{itemize}
 			\item falls die Dimensionen der Tensoren groß sind, ist die Differenz zwischen der TCE und der MCE gering
 			\item durch effizienteres Caching schneller in Hardware umsetzbar
@@ -202,7 +202,7 @@
 \end{frame}
 
 \begin{frame}{Unterschiedliche Evaluationsmetriken}
-	\textbf{$\rightarrow$ maximum contraction expense wird verwendet}
+	\textbf{$\rightarrow$ MCE wird verwendet}
 	\begin{align*}
 		MS & = \max_t SE(sq_t) \\ MC &= \max_t CE(sq_t)
 	\end{align*}
@@ -393,7 +393,7 @@
 
 
 
-\subsection{Vanilla Search}
+\subsection{Vanilla-Search}
 
 \begin{frame}{Sharing Order Calculation}
 	\includegraphics[scale=1]{figure_05_a}
@@ -406,7 +406,7 @@
 	\item zwei zeilen-vektoren  der  Matrizen zu kontrahierenden Tensoren
 	\item die Menge der Tensoren, aus welchen die inputs (durch vorherige Kontraktionen) entstanden sind
 }
-\begin{frame}{Vanilla Search - Teil 1}
+\begin{frame}{Vanilla-Search - Teil 1}
 	\includegraphics[scale=1]{algorithm_02_top}
 \end{frame}
 \note[itemize]{
@@ -416,7 +416,7 @@
 	\item 5: speichere Zeilenvektor aus Adjazenzmatrix
 	\item 6-7: Je nach modus (compute/storage) wird LME unterschiedlich initialisiert
 }
-\begin{frame}{Vanilla Search - Teil 2}
+\begin{frame}{Vanilla-Search - Teil 2}
 	\includegraphics[scale=1]{algorithm_02_middle}
 \end{frame}
 \note[itemize]{
@@ -427,7 +427,7 @@
 	\item 17: $S_{\Tau_I}$ speichern, da sich der Wert bei den anderen Split-cases nicht mehr ändert
 	\item Generell: initialisiert nur variablen, die tatsächliche Berechnung geschieht in Teil 3
 }
-\begin{frame}{Vanilla Search - Teil 3}
+\begin{frame}{Vanilla-Search - Teil 3}
 	\includegraphics[scale=1]{algorithm_02_bottom}
 \end{frame}
 \note[itemize]{
@@ -446,7 +446,7 @@
 \note[itemize]{
 	\item outer product: multiplikation von Tensoren ohne sharing Orders (siehe $\tauB_2, \tauB_3$)
 	\item es ist bewiesen dass die beste Kontraktion (kleinste MS / MC) immer ohne outer - products auskommt
-	\item[$\Rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
+	\item[$\rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
 	\item Wenn es im Netzwerk \glqq{}Subnetzwerke\grqq gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
 }
 \begin{frame}{Pruning - Einführung}
@@ -477,7 +477,7 @@
 
 \begin{frame}{Parallelisierung}
 	\begin{itemize}
-		\item in der \textit{vanilla search} gibt es keine Speicherkonflikte, denn es werden nur für die Tensoren spezifische Werte ausgerechnet: Speicherkosten, Zeilenvektoren, LME \pause
+		\item in der \textit{vanilla-search} gibt es keine Speicherkonflikte, denn es werden nur für die Tensoren spezifische Werte ausgerechnet: Speicherkosten, Zeilenvektoren, LME \pause
 		\item in der \textit{Suche mit Weglassen von Outer-Products} werden zusätzlich noch die Outer-Product-Vektoren der Tensoren berechnet, was ebenfalls tensorenspezifische Werte sind
 		\item unterschiedliche Threads mit unterschiedlichen Tensoren finden möglicherweise einen gleichen Tensor, welcher nicht beachtet werden muss
 		\item somit wird gleichzeitig auf das gleiche $P_{\Tau_I}$ geschrieben, jedoch immer mit demselben Datum
@@ -491,7 +491,7 @@
 
 
 
-\begin{frame}{Experimentelle Resultate Vanilla Search}
+\begin{frame}{Experimentelle Resultate Vanilla-Search}
 	\begin{itemize}
 		\item die für das Testen verwendeten Tensornetzwerke sind komplett vernetzt
 	\end{itemize}
@@ -501,7 +501,7 @@
 	$\rightarrow$ MS Vanilla ist schneller als MC Vanilla
 \end{frame}
 
-\begin{frame}{Experimentelle Resultate Vanilla Search}
+\begin{frame}{Experimentelle Resultate Vanilla-Search}
 	\begin{itemize}
 		\item ein zusätzlicher Tensor führt ungefähr zu einer Verdreifachung der Suchzeit
 	\end{itemize}
