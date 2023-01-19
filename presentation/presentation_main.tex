@@ -49,26 +49,24 @@
 	\tableofcontents
 \end{frame}
 
-\section{Einführung und Zielsetzung}
+\section{Einführung}
+
 \begin{frame}{Einführung}
 	\begin{itemize}
-		\item viele Anwendungen: Quantenphysik, Maschinelles Lernen, Entwurf von elektrischen Schaltungen
-		\item Reihenfolge der Kontraktionen beeinflusst sowohl Speicher als auch Rechenaufwand
-		\item Problem: das Finden der optimalen Reihenfolge ist NP-hart
-		\item[$\rightarrow$] Heuristiken
-	\end{itemize}
-\end{frame}
-
-\begin{frame}{Zielsetzung}
-	\begin{itemize}
-		\item Entwurf eines universalen Algorithmus \begin{itemize}
+		\item Problem: effiziente Kontraktion eines beliebigen Tensor-Netzwerks
+		\item Ziel: Entwurf eines universalen Algorithmus \begin{itemize}
 				  \item für alle Netzwerktopologien anwendbar
 			      \item effiziente Datenstruktur für die Suche
 			      \item Multithreading für bessere reale Performanz
 		      \end{itemize}
-		\item[$\rightarrow$] Benchmarks
+		\item[$\rightarrow$] Evaluation durch Benchmarks
 	\end{itemize}
 \end{frame}
+\note[itemize]{
+	\item Kontraktion ist NP-hart
+	\item[$\rightarrow$] Heuristiken zur Verbesserung
+	\item Datenstruktur efizient im Sinne von Speicher-Optimierung
+}
 
 \section{Tensor-Kontraktionen}
 \subsection{Allgemeines}
@@ -93,32 +91,6 @@
 	\item Kantengewicht: $\log_2$ der Order (Vereinfachung der Rechnung)
 }
 
-\begin{frame}{Begriffseinführungen}
-	\begin{columns}
-		\begin{column}{0.5\textwidth}
-			\begin{itemize}
-				\item $\tauB$: Tensor
-				\item $\Tau_I$: Ergebnis-Tensor aus der Kontraktion der Tensoren $I$
-				\item $FO_{\Tau_I}$: Free-Orders von $\Tau_I$
-				\item $SO_{\Tau_I\Tau_J}$: Sharing-Orders von $\Tau_I\Tau_J$
-			\end{itemize}
-		\end{column}
-		\begin{column}{0.5\textwidth}
-			\begin{itemize}
-				\item $SE_{\Tau_I}$: Storage-Expense von $\Tau_I$
-				\item $CE_{\Tau_I\Tau_J}$: Compute-Expense von $\Tau_I\Tau_J$
-				\item $MS$: Maximale $SE$ einer Kontraktion
-				\item $MC$: Maximale $CE$ einer Kontraktion
-			\end{itemize}
-		\end{column}
-	\end{columns}
-\end{frame}
-\note[itemize]{
-	\item CE: Anzahl der Multiplikationen
-}
-
-
-
 \begin{frame}{Formeln}
 	\begin{equation}
 		FO_{\Tau_I}=\sum\limits_m \log_k N_{\Tau_I}^m, N_{\Tau_I}^m \in \text{ free orders of } \Tau_I
@@ -137,21 +109,11 @@
 	\end{equation}
 \end{frame}
 \note[itemize]{
-	\item TODO was soll Ich hierzu sagen?
+	\item 1, 2: Summe über Logarithmus wie Produkt über Ursprung
+	\item 3: Speicher-größe eines Tensors = Produkt aller Ordnungen = Summe der logarithmierten Ordnungen
+	\item 4: Größe des Kontrhierten Tensors = Produkt der Ordnungen der Ursprungstensoren ausgenommen der SO (2 mal) = Summe der Ursprungstensoren -2SO
+	\item 5: TODO???
 }
-
-\begin{frame}{Kontraktion}
-	\begin{columns}
-		\begin{column}{0.4\textwidth}
-			\includegraphics[scale=.65]{figure_03_a}
-		\end{column}
-		\begin{column}{0.6\textwidth}
-			\includegraphics[scale=.7]{figure_03_b}
-			$sq=(((\tauB_0\tauB_1)\tauB_2)\tauB_3)$
-		\end{column}
-	\end{columns}
-\end{frame}
-
 
 \subsection{Evaluationsmetriken}
 
@@ -269,7 +231,7 @@
 \begin{frame}{$Set_v$ und $Split_v$}
 	\begin{itemize}
 		\item jeder Tensor aus $Set_v$ kann auf $Split_v$ verschiedene Arten in einem Schritt aus zwei verschiedenen Teiltensoren kontrahiert werden
-		\item der Tensor $\Tau_{012} \in Set_3$ kann kontrahiert werden aus $\{\tauB_0, \Tau_{02} \}$, $\{\tauB_{1}, \Tau_{02} \}$ oder $\{\tauB_{2}, \Tau_{01} \}$ $\rightarrow Split_3 = 3$
+		\item der Tensor $\Tau_{012} \in Set_3$ kann kontrahiert werden aus $\{\tauB_0, \Tau_{12} \}$, $\{\tauB_{1}, \Tau_{02} \}$ oder $\{\tauB_{2}, \Tau_{01} \}$ $\rightarrow Split_3 = 3$
 	\end{itemize}
 	\begin{align*}
 		Split_v & = \begin{cases}
@@ -348,12 +310,6 @@
 	\end{itemize}
 	\begin{equation*}
 		R_{\Tau_I} = R_{\Tau_J} + R_{\Tau_K}, J \cup K = I \wedge J \cap K = \emptyset
-	\end{equation*} \pause
-	\begin{itemize}
-		\item auch der $SE$ eines Tensors wird mit Hilfe eines beliebigen Split-Cases berechnet und gespeichert
-	\end{itemize}
-	\begin{equation*}
-		SE_{\Tau_I \Tau_J} = S_{\Tau_{I}} + S_{\Tau_{J}} - 2SO_{\Tau_I \Tau_J}
 	\end{equation*}
 \end{frame}
 
@@ -398,17 +354,6 @@
 
 \subsection{Vanilla-Search}
 
-\begin{frame}{Sharing Order Calculation}
-	\includegraphics[scale=1]{figure_05_a}
-
-	\includegraphics[scale=1]{algorithm_01}
-\end{frame}
-\note[itemize]{
-	\item WICHTIG: ab jetzt arbeiten wir auf den Adjazenzmatrizen und nicht auf den tensoren selbst
-	\item input:
-	\item zwei zeilen-vektoren  der  Matrizen zu kontrahierenden Tensoren
-	\item die Menge der Tensoren, aus welchen die inputs (durch vorherige Kontraktionen) entstanden sind
-}
 \begin{frame}{Vanilla-Search - Teil 1}
 	\includegraphics[scale=1]{algorithm_02_top}
 \end{frame}
@@ -443,25 +388,9 @@
 }
 
 \subsection{Pruning}
-\begin{frame}{Pruning - Einührung}
-	\includegraphics[scale=1]{figure_03_a}
-\end{frame}
-\note[itemize]{
-	\item outer product: multiplikation von Tensoren ohne sharing Orders (siehe $\tauB_2, \tauB_3$)
-	\item es ist bewiesen dass die beste Kontraktion (kleinste MS / MC) immer ohne outer - products auskommt
-	\item[$\rightarrow$] Outer products können bei Kontraktionen ausgeschlossen werden
-	\item Wenn es im Netzwerk \glqq{}Subnetzwerke\grqq gibt, welche untereinander keine sharing orders teilen, kann in den subnetzwerken unabhängig voneinander nach der optimalen sequenz gesucht werden
-}
-\begin{frame}{Pruning - Einführung}
-	\includegraphics[scale=1]{figure_06}
-\end{frame}
-\note[itemize]{
-	\item Intra-redundant: innerhalb eines Set
-	\item Inter-redundant: zwischen verschiedenen Sets
-}
 
 \begin{frame}{Pruning - Algorithmus}
-	\includegraphics[scale=1]{algorithm_03}
+	\includegraphics[scale=.42]{algorithm_04}
 \end{frame}
 \note[itemize]{
 	\item optimierung für inter-redundante tensoren
@@ -516,20 +445,7 @@
 	\end{equation*}
 \end{frame}
 
-\begin{frame}{Benchmarks}
-	\begin{itemize}
-		\item getestet auf verschiedenen Topologien (Kette, Baum, Radial und Gitter)
-		\item Anzahl zusätzlicher Kanten variabel
-	\end{itemize}
-
-	\includegraphics[scale=1]{table_03}
-\end{frame}
-\note[itemize]{
-	\item 19 Tensoren, keine zusätzlichen Kanten
-	\item pruning verbessert Suchzeiten, bei MC effektiver als bei MS
-	\item Kette ist besser als Baum ist besser als Radial
-}
-\begin{frame}{Suche - Kette, Baum, Radial}
+\begin{frame}{Experimentelle Resultate Topologien Vergleich}
 	\includegraphics[scale=.6]{figure_09}
 	\includegraphics[scale=.6]{figure_10}
 \end{frame}
@@ -539,13 +455,6 @@
 	\item Kette: hat die meisten prunable tensors, deswegen ist es dort am effektivsten
 	\item
 }
-\begin{frame}{Suche - Gitter}
-	\includegraphics[scale=1]{figure_11}
-\end{frame}
-\note[itemize]{
-	\item
-}
-
 
 \subsection{Parallelisierung}
 
