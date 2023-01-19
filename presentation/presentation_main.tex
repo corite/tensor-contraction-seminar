@@ -319,7 +319,10 @@
 		\item das Kontrahieren zweier Tensoren ohne Sharing-Order ist ein Outer-Product
 		\item diese Outer-Products müssen nicht beachtet werden, da es immer eine Kontraktionssequenz ohne Outer-Products gibt, welche den kleinsten $MC$ bzw. $MS$ besitzt\cite{outerProduct}
 		\item es wird eine ähnliche Datensturktur wie zuvor verwendet, um Outer-Products zu finden
-	\end{itemize} \pause
+	\end{itemize}
+	\begin{figure}
+		\includegraphics{figure_06_a}
+	\end{figure} \pause
 	\begin{equation*}
 		\rightarrow \text{zu finden sind Tensoren, sodass } SO_{\Tau_I \Tau_J} = 0
 	\end{equation*}
@@ -468,20 +471,13 @@
 	\end{itemize}
 \end{frame}
 
-\subsection{Vergleich mit vorheriger Forschung}
-
-\begin{frame}{Vergleich mit vorheriger Forschung}
-	\begin{itemize}
-		\item es gibt Paper, welche einen Algorithmus zum Approximieren einer optimalen Lösung vorstellen
-		\item ebenfalls gibt es Arbeiten, welche nur auf gewissen Netzwerkanordnungen funktieren
-		\item ein ähnlicher Algorithmus wie der hier vorgestellte ist \mbox{$OP$ \& $\mu_{Cap}$}\cite{op_mu_cap}
-	\end{itemize}
-\end{frame}
+\subsection{Vergleich mit $OP$ \& $\mu_{Cap}$}
 
 \begin{frame}{Vergleich mit $OP$ \& $\mu_{Cap}$}
 	\begin{itemize}
+		\item ein ähnlicher Algorithmus wie der hier vorgestellte ist \mbox{$OP$ \& $\mu_{Cap}$}\cite{op_mu_cap}
 		\item \mbox{$OP$ \& $\mu_{Cap}$} berechnet $CE$ einer Kontraktionssequenz
-		\item \textit{zur Erinnerung:} $CE $ ist normalerweise ähnlich dem maximalen $CE$ einer Kontraktionsreihenfolge, da hier der aufwändigste Kontraktionsschritt ausschlaggebend ist \pause
+		\item \textit{zur Erinnerung:} $CE $ ist ähnlich dem maximalen $CE$ einer Kontraktionsreihenfolge für ein Netzwerk mit großen Tensoren, da hier der aufwändigste Kontraktionsschritt ausschlaggebend ist \pause
 		\item verglichen werden die beiden Algorithmen auf einer Binärbaumstruktur mit zufällig gewählten Free- und Sharing-Orders
 	\end{itemize}
 	\begin{equation*}
