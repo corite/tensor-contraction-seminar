@@ -150,15 +150,14 @@
 		\textbf{Total-Contraction-Expense (TCE)}
 		\begin{itemize}
 			\item genauer als nur das Maximum zu bestimmen
-			\item langsamer
 		\end{itemize}
 
 
 		\column{.5\textwidth}
 		\textbf{Maximum-Contraction-Expense (MCE)}
 		\begin{itemize}
-			\item falls die Dimensionen der Tensoren groß sind, ist die Differenz zwischen der TCE und der MCE gering
 			\item durch effizienteres Caching schneller in Hardware umsetzbar
+			\item falls die Dimensionen der Tensoren groß sind, ist die Differenz zwischen der TCE und der MCE gering
 		\end{itemize}
 
 	\end{columns}
@@ -256,7 +255,7 @@
 
 \begin{frame}{Aufbau der verwendeten Datenstruktur}
 	\begin{itemize}
-		\item das Tensorennetzerk wird als ein ungerichteter Graph angesehen
+		\item das Tensornetzerk wird als ein ungerichteter Graph angesehen
 		\item es wird eine Adjazenzmatrix verwendet, um die Sharing-Orders zu speichern und auf sie zuzugreifen
 		\item die Matrix ist hierbei nicht symmetrisch,
 		      sondern es gilt $SO_{\tauB_i \tauB_j} = E_{\tauB_i \tauB_j} + E_{\tauB_j \tauB_i}$, wobei $E_{\tauB_a \tauB_b}$ der jeweilige Eintrag in der Zeile von $\tauB_a$ und Spalte von $\tauB_b$ ist und $E_{\tauB_a \tauB_b} \in \mathbb{N}_0$.
@@ -276,7 +275,7 @@
 		\column{.5\textwidth}
 		\begin{figure}
 			\includegraphics[scale=1.3]{figure_05_c}
-			\caption*{eine mögliche zum Netzerk gehörende Adjazenzmatrix}
+			\caption*{eine mögliche zum Netzwerk gehörende Adjazenzmatrix}
 		\end{figure}
 	\end{columns}
 \end{frame}
@@ -319,7 +318,7 @@
 	\begin{itemize}
 		\item das Kontrahieren zweier Tensoren ohne Sharing-Order ist ein Outer-Product
 		\item diese Outer-Products müssen nicht beachtet werden, da es immer eine Kontraktionssequenz ohne Outer-Products gibt, welche den kleinsten $MC$ bzw. $MS$ besitzt\cite{outerProduct}
-		\item es wird eine ähnliche Datensturktur wie zuvor verwendet, um Outer-Products zu finden
+		\item es wird eine ähnliche Datenstruktur wie zuvor verwendet, um Outer-Products zu finden
 	\end{itemize}
 	\begin{figure}
 		\includegraphics{figure_06_a}
@@ -336,15 +335,6 @@
 	\begin{figure}
 		\includegraphics[scale=1.2]{figure_05_f_h}
 	\end{figure}
-\end{frame}
-
-\begin{frame}{Finden von Outer-Products}
-	\begin{itemize}
-		\item es wird ein Zeilenvektor $O_{\Tau_I}$ berechnet
-		\item an den Spalten (und den dazugehörigen Tensoren), welche gleich $0$ sind, sind die Tensoren ablesbar, welche keine Sharing-Orders mit $\Tau_I$ haben
-		\item diese können im späteren Algorithmus ignoriert werden \pause
-		\item die Diagonale der verwendeten Matrix ist $1$, damit Tensoren, welche sich schon in der Menge $I$ aus $\Tau_I$ befinden, grundsätzlich einen Wert größer $0$ in $O_{\Tau_I}$ haben
-	\end{itemize}
 \end{frame}
 
 
@@ -410,7 +400,7 @@
 
 \begin{frame}{Parallelisierung}
 	\begin{itemize}
-		\item in der \textit{vanilla-search} gibt es keine Speicherkonflikte, denn es werden nur für die Tensoren spezifische Werte ausgerechnet: Speicherkosten, Zeilenvektoren, LME \pause
+		\item in der \textit{Vanilla-Search} gibt es keine Speicherkonflikte, denn es werden nur für die Tensoren spezifische Werte ausgerechnet: Speicherkosten, Zeilenvektoren, LME \pause
 		\item in der \textit{Suche mit Weglassen von Outer-Products} werden zusätzlich noch die Outer-Product-Vektoren der Tensoren berechnet, was ebenfalls tensorenspezifische Werte sind
 		\item unterschiedliche Threads mit unterschiedlichen Tensoren finden möglicherweise einen gleichen Tensor, welcher nicht beachtet werden muss
 		\item somit wird gleichzeitig auf das gleiche $P_{\Tau_I}$ geschrieben, jedoch immer mit demselben Datum
