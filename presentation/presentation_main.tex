@@ -1,4 +1,4 @@
-\documentclass[notes]{beamer}
+\documentclass{beamer}
 \usetheme{metropolis}
 %\usepackage[backend=biber]{biblatex}
 %\usepackage{booktabs} 
@@ -381,7 +381,14 @@
 \subsection{Pruning}
 
 \begin{frame}{Pruning - Algorithmus}
-	\includegraphics[scale=.42]{algorithm_04}
+	\begin{columns}
+		\begin{column}{0.5\textwidth}
+			\includegraphics[scale=.7]{algorithm_04_top}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\includegraphics[scale=.5]{algorithm_04_bottom}
+		\end{column}
+	\end{columns}
 \end{frame}
 \note[itemize]{
 	\item optimierung für inter-redundante tensoren
