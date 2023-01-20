@@ -23,6 +23,7 @@
 %bibliography numbers
 \setbeamertemplate{bibliography item}{\insertbiblabel}
 
+\setbeameroption{show notes on second screen=right} % Both
 %\setbeameroption{show notes} % comment out for the real presentation
 \graphicspath{{./pictures_eps}}
 
@@ -45,9 +46,9 @@
 	\titlepage
 \end{frame}
 
-\begin{frame}[allowframebreaks=0.8]{Gliederung}
-	\tableofcontents
-\end{frame}
+%\begin{frame}[allowframebreaks=0.8]{Gliederung}
+%	\tableofcontents
+%\end{frame}
 
 \section{Einführung}
 
@@ -111,7 +112,7 @@
 \note[itemize]{
 	\item 1, 2: Summe über Logarithmus wie Produkt über Ursprung
 	\item 3: Speicher-größe eines Tensors = Produkt aller Ordnungen = Summe der logarithmierten Ordnungen
-	\item 4: Größe des Kontrhierten Tensors = Produkt der Ordnungen der Ursprungstensoren ausgenommen der SO (2 mal) = Summe der Ursprungstensoren -2SO
+	\item 4: Größe des Kontrahierten Tensors = Produkt der Ordnungen der Ursprungstensoren ausgenommen der SO (2 mal) = Summe der Ursprungstensoren -2SO
 	\item 5: TODO???
 }
 
@@ -169,7 +170,7 @@
 	\end{align*}
 	% nur ein Beispiel
 	Beispiel für eine Kontraktionssequenz:
-	$sq = ((((\tauB_{1} \tauB_{4}) \tauB_{2}) \tauB_{3}) \tauB_{1})$
+	$sq = ((((\tauB_{1} \tauB_{4}) \tauB_{2}) \tauB_{3}) \tauB_{0})$
 \end{frame}
 
 
@@ -351,6 +352,7 @@
 	\item 1-2: initialisiere Adjazenzmatrix und Lowest Maximum Expense für alle grund-tensoren $\tau$, nicht $\Tau$
 	\item 3: iteriere über alle Tensoren im Netzwerk
 	\item 4: speichere die Größe des Tensors (Data Size) = Summe SO + Summe FO
+	\item SOC: Sharing Orders aus Adjazenzmatrix
 	\item 5: speichere Zeilenvektor aus Adjazenzmatrix
 	\item 6-7: Je nach modus (compute/storage) wird LME unterschiedlich initialisiert
 }
@@ -374,16 +376,26 @@
 	\item LME bei $\tau$ $S_{\tau} (MS)$, 0 (MC), sonst MAX\_FLOAT
 	\item 27: bestimmung von ME. Da in den LME's bereits das maximum aller darin enthaltenen Kontraktionen steht, müssen nur diese 3 Werte verglichen werden
 	\item 28: update wenn neues LME gefunden wurde
-	\item 32: ???
+	\item 32: frühzeitiger Abbruch für MS
 }
 
 \subsection{Pruning}
 
 \begin{frame}{Pruning - Algorithmus}
-	\includegraphics[scale=.42]{algorithm_04}
+	\begin{columns}
+		\begin{column}{0.48\textwidth}
+			\includegraphics[scale=.7]{algorithm_04_top}
+		\end{column}
+		\begin{column}{0.02\textwidth}
+		\end{column}
+		\begin{column}{0.5\textwidth}
+			\includegraphics[scale=.5]{algorithm_04_bottom}
+		\end{column}
+	\end{columns}
 \end{frame}
 \note[itemize]{
 	\item optimierung für inter-redundante tensoren
+	\item OPP: berechnet prunable Tensors für gegebenen Tensor und Anzahl der Ursprungstensoren
 }
 \subsection{Parallelisierung}
 
@@ -442,8 +454,6 @@
 \note[itemize]{
 	\item fig 9: Vergleich MS vs MC auf verschiedenen Topologien
 	\item bei Baum und Radial abgheschnitten da zu lange suchzeiten (> 150s)
-	\item Kette: hat die meisten prunable tensors, deswegen ist es dort am effektivsten
-	\item
 }
 
 \subsection{Parallelisierung}
@@ -487,18 +497,6 @@
 		\includegraphics[scale=1.3]{figure_14_b}
 		\caption*{Vergleich auf Binärbaum mit 25\% extra Kanten}
 	\end{figure}
-\end{frame}
-
-
-\section{Zusammenfassung}
-
-\begin{frame}{Zusammenfassung}
-	\begin{itemize}
-		\item Repräsentation der Sharing-Orders logarithmisch
-		\item Adjazenzmatrix mit Zwischenvektoren zum Finden von Sharing-Orders und Outer-Products
-		\item BFS-Algorithmus zum Berechnen von $MC$ oder $MS$, wobei Outer-Products nicht beachtet werden
-		\item Parallelisierung des BFS-Algorithmus ist einfach möglich
-	\end{itemize}
 \end{frame}
 
 \begin{frame}[allowframebreaks]{Bibliography}
