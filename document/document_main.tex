@@ -1,0 +1,62 @@
+\documentclass{article}
+\usepackage[ngerman]{babel}
+
+\usepackage{amsfonts, amsmath, lmodern}
+\usepackage{amssymb}
+\usepackage{bm}
+\usepackage{titling}
+\usepackage{geometry}
+\geometry{
+a4paper,
+total={170mm,257mm},
+left=20mm,
+top=20mm,
+}
+
+\begin{document}
+\newcommand{\qg}[1]{\glqq{}#1\grqq{}}
+\newcommand{\Tau}{\bm{\mathcal{T}}}
+\newcommand{\tauB}{\bm{\tau}}
+
+\begin{center}
+    {\large \textbf{Suche nach einer guten Kontraktionsreihenfolge - Christian Ortlepp}}
+   \end{center}
+   
+\subsubsection*{Problemstellung}
+
+In einem Tensornetzwerk bestehend aus den Tensoren $\tauB_i \mid i\in I$ soll die Kontraktionsreihenfolge gefunden werden, bei welcher wahlweise die Berechnungskosten (Compute-Expense $\sim$ CE) oder Speicherkosten (Storage-Expense $\sim$ SE) minimal sind.
+Diese Aufgabe ist grundsätzlich NP-hart. Um trotzdem (vergleichsweise) effiziente Lösungen für das Problem zu finden bleibt somit nur der Entwurf von Heuristiken, welche zwar nicht die Zeitkomplexität, jedoch die Konstanten Faktoren minimieren können. Als Basis des Algorithmus verwenden wir die Breitensuche (BFS), welche durch die Begrenzung des Suchraums, Parallelisierung und eine effiziente Datenstruktur für Zwischenergebnisse optimiert wird.
+
+\subsubsection*{Tensornetzwerke}
+
+Durch die Kontraktion zweier Grundtensoren $\tauB_k$ und $\tauB_l$ entsteht ein neuer Zusammengesetzter Tensor $\Tau_{kl}$, welcher die Dimensionen der Ursprungstensoren ausgenommen der gleichen Dimensionen hat. Die Dimensionen die gleich sind und sich bei der Kontraktion auflösen heißen \qg{Sharing Orders} (SO), alle anderen \qg{Free Orders} (FO).
+
+Um mit den Dimensionen einfacher Rechnen zu können, verwenden wir im Folgenden stets nur deren logarithmierten Wert, da sich dann Multiplikationen als Additionen ausdrücken lassen.
+
+\subsubsection*{Evaluationsmetriken}
+
+Zunächst muss entschieden werden ob wir bei der Berechnung SE oder CE optimieren wollen. Unabhängig davon entsprechen die Kosten einer Kontraktionsreihenfolge grundsätzlich der Summe der Kosten der zugrundeliegenden binären Kontraktionen. Um Berechnungsaufwand zu sparen approximieren wir diesen Wert durch das Maximum der Kosten der zugrundeliegenden binären Kontraktionen, da dies bei großen Tensoren eine gute Abschätzung ist.
+Die Kosten einer einzelnen Kontraktion lassen sich aus Größe der zugrundeliegenden Tensoren $S_{\Tau_I}, S_{\Tau_J}$ mit den Formeln $SE_{\Tau_I\Tau_J}=S_{\Tau_{IJ}}=S_{\Tau_I}+S_{\Tau_J}-2SO_{\Tau_I\Tau_J}$ und $CE_{\Tau_I\Tau_J}=S_{\Tau_I}+S_{\Tau_J}-SO_{\Tau_I\Tau_J}=S_{\Tau_{IJ}}+SO_{\Tau_I\Tau_J}$ berechnen.
+
+\subsubsection*{Breitensuche - BFS}
+
+Wir iterieren von $v=2$ bis $V=|I|$ über alle $Set_v$.
+$Set_v$ bezeichnet hierbei die Menge jener zusammengesetzter Tensoren welche aus $v$ Grundtensoren entstanden sind. Für jeden Tensor in $Set_v$ berechnen und speichern wir nun für jede mögliche Kontraktionsreihenfolge, auch genannt Split-Case, die Kosten. Hierbei kann auf die Berechnungen der vorherigen Iterationen zurückgegriffen werden. Nach der letzten Iteration muss dann aus $Set_V$ derjenige Split-Case ausgewählt werden, welcher die niedrigsten Kosten verursacht hat.
+
+Alle Berechnungen innerhalb eines $Set_v$ sind voneinander unabhängig, dies erlaubt eine einfache Parallelisierung.
+
+\subsubsection*{Datenstruktur}
+
+Bei der Breitensuche muss zur Berechnung der $SE$ bzw. $CE$ oft auf die Sharing- bzw. Free-Orders der einzelnen (zusammengesetzten) Tensoren zugegriffen werden. Bei den Free-Orders sind diese Zugriffe effizient möglich, da alle Free-Orders aufsummiert und als ein Wert pro Tensor effektiv gespeichert werden kann. Da Sharing-Orders jedoch nur zwischen 2 Tensoren definiert sind, ist eine komplexere Datenstruktur nötig.
+Gewählt wurde im Paper die Betrachtung des Netzwerks als gewichteten Graphen, wobei die Grundtensoren Knoten und die Sharing Orders Kanten darstellen. Das Netzwerk lässt sich somit als Adjazenzmatrix darstellen, hierbei ist aber darauf zu achten dass die Kantengewichte $SO$ nicht reflexiv eingetragen werden dürfen. Um dann die Sharing-Order zweier Tensoren zu bestimmen muss man die Einträge an den entsprechenden Indizes aufsummieren. 
+Um auch die Sharing-Orders von zusammengesetzten Tensoren bestimmen zu können muss man in der Matrix die Zeilenvektoren der Ursprungstensoren aufsummieren.
+
+Wir erhalten damit eine einfache Datenstruktur mit guten Cache-Eigenschaften.
+
+\subsubsection*{Pruning}
+
+Um den bisherigen Algorithmus schneller zu machen wollen wir mit Pruning den Suchraum verkleinern.
+Bisher werden in unserem Algorithmus auch solche Kontraktionen mit betrachtet, welche keine Sharing Order haben. Diese Kontraktionen nennt man Outer-Products. Da es jedoch bewiesen ist dass es immer eine optimale Kontraktionsreihenfolge gibt welche keine Outer Products enthält, können wir diese bei der Suche ausschließen. 
+Um die Outer-Products effektiv berechnen zu können wird ebenfalls eine auf Adjazenzmatrizen beruhende Datenstruktur verwenden.
+
+\end{document}
